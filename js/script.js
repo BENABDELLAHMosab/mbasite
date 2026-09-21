@@ -206,22 +206,39 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgress();
     }
 
-    // --- SCROLL REVEAL (Intersection Observer) ---
-    const observerOptions = {
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('show-scroll');
-                observer.unobserve(entry.target); // Reveal once
-            }
-        });
-    }, observerOptions);
-
+    // --- SCROLL REVEAL (Intersection Observer & Progressive Enhancement) ---
     const hiddenElements = document.querySelectorAll('.hidden-scroll');
-    hiddenElements.forEach((el) => observer.observe(el));
+    
+    if ('IntersectionObserver' in window) {
+        const observerOptions = {
+            threshold: 0 // Seuil 0 pour garantir le déclenchement sur les très longues sections mobiles
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show-scroll');
+                    observer.unobserve(entry.target); // Reveal once
+                }
+            });
+        }, observerOptions);
+
+        hiddenElements.forEach((el) => {
+            // On cache les éléments uniquement si le JS et l'Observer sont actifs
+            el.classList.add('js-hidden');
+            observer.observe(el);
+        });
+
+        // Mécanisme de secours (Fallback) : force l'affichage après 2 secondes 
+        // pour garantir l'accessibilité au cas où l'animation resterait bloquée
+        setTimeout(() => {
+            hiddenElements.forEach((el) => {
+                if (!el.classList.contains('show-scroll')) {
+                    el.classList.add('show-scroll');
+                }
+            });
+        }, 2000);
+    }
 
     // 5. INITIALIZE 3D BACKGROUND (If present)
     if (typeof init === 'function') {

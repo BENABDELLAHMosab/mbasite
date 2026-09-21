@@ -1382,9 +1382,16 @@ footer {
 
 /* --- ANIMATIONS & UTILS --- */
 .hidden-scroll {
+  /* Visible par défaut (Progressive Enhancement) */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Masqué UNIQUEMENT par JavaScript (avant animation) */
+.hidden-scroll.js-hidden:not(.show-scroll) {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .show-scroll {
