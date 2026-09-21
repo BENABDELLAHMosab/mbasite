@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contactez Mosab Ben Abdellah - Ingénieur Informatique.">
-    <title>Contact | Mosab Ben Abdellah</title>
+    <meta name="description" content="Contactez Mosab BEN ABDELLAH - Recherche de PFE 2027 en France.">
+    <title>Contact | Mosab BEN ABDELLAH</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,7 +98,7 @@
                             <div>
                                 <strong>Localisation</strong>
                                 <br>
-                                Tanger, Maroc
+                                Brest, France
                             </div>
                         </div>
 
@@ -117,7 +117,7 @@
                             <div>
                                 <strong>Téléphone</strong>
                                 <br>
-                                <a href="tel:+212602504704">+212 602 504 704</a>
+                                <a href="tel:+33603678874">+33 6 03 67 88 74</a>
                             </div>
                         </div>
 
@@ -130,7 +130,7 @@
                             </a>
 
                             <a class="icon-btn" id="waLink"
-                                href="https://wa.me/212602504704?text=Bonjour%20Mosab%2C%20j%27ai%20visit%C3%A9%20votre%20portfolio%20et%20je%20souhaiterais%20discuter%20d%27une%20opportunit%C3%A9%20professionnelle%20avec%20vous."
+                                href="https://wa.me/33603678874?text=Bonjour%20Mosab%2C%20j%27ai%20visit%C3%A9%20votre%20portfolio%20et%20je%20souhaiterais%20discuter%20d%27une%20opportunit%C3%A9%20professionnelle%20avec%20vous."
                                 target="_blank" rel="noopener noreferrer" aria-label="Discuter sur WhatsApp"
                                 title="WhatsApp">
                                 <img src="assets/icons/whatsapp.svg" alt="WhatsApp Icon" width="22" height="22"
@@ -147,8 +147,7 @@
                         </div>
                     </div>
 
-                    <form class="contact-form" action="#"
-                        onsubmit="event.preventDefault(); alert('Merci pour votre message ! (Simulation)');">
+                    <form class="contact-form" id="contactForm">
                         <div class="form-group">
                             <label for="name">Nom complet</label>
                             <input type="text" id="name" name="name" class="form-input" placeholder="Votre nom"
@@ -165,9 +164,18 @@
                                 required></textarea>
                         </div>
                         <div class="contact-form-actions">
-                            <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                            <button type="submit" class="btn btn-primary">Me contacter par e-mail</button>
                         </div>
                     </form>
+                    <script>
+                        document.getElementById('contactForm').addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            const name = document.getElementById('name').value;
+                            const message = document.getElementById('message').value;
+                            const subject = "Contact depuis le portfolio - " + name;
+                            window.location.href = "mailto:mossabbenabdellah7@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(message);
+                        });
+                    </script>
                 </div>
             </div>
         </section>

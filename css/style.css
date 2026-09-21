@@ -1,4 +1,4 @@
-﻿/* 
+/* 
 /* 
 ========================================================================
    1. VARIABLES & THEME SETUP
@@ -993,8 +993,20 @@ header {
 /* --- PROJECTS --- */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
+}
+
+/* Centrage dynamique pour 1 ou 2 projets visibles (via JS) */
+@media (min-width: 992px) {
+  .projects-grid.grid-center-1 {
+    grid-template-columns: calc(33.333% - 1.34rem);
+    justify-content: center;
+  }
+  .projects-grid.grid-center-2 {
+    grid-template-columns: repeat(2, calc(33.333% - 1.34rem));
+    justify-content: center;
+  }
 }
 
 .project-card {
@@ -2167,6 +2179,7 @@ a:focus-visible {
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
+  white-space: nowrap;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-light);
   border-radius: 50px;
@@ -2303,12 +2316,11 @@ a:focus-visible {
   /* Ensure z-index works */
   z-index: 10;
 
-  /* Base Style matches "Me contacter" geometry */
-  padding: 0.75rem 1.75rem;
+  /* Proportions identiques au mode clair */
+  padding: 10px 20px;
   font-weight: 600;
-  font-size: 1rem;
-  border-radius: var(--radius-md);
-  /* Consistent radius */
+  font-size: 0.95rem;
+  border-radius: 50px;
 
   /* A) Border Visible */
   border: 1px solid rgba(255, 255, 255, 0.30);
@@ -2386,11 +2398,19 @@ a:focus-visible {
 /* PDF Badge */
 [data-theme='dark'] .cv-ext {
   background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  border: none;
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 0.75rem;
   padding: 2px 6px;
   border-radius: 4px;
   margin-left: 4px;
   font-weight: 500;
+}
+
+/* Correction alignement horizontal boutons CV */
+@media (min-width: 992px) {
+  .hero-cv-wrapper,
+  [data-theme="dark"] .hero-cv-wrapper {
+    flex-wrap: nowrap !important;
+  }
 }

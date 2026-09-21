@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Projets de Mosab Ben Abdellah - Développement Application, Web, et Cloud.">
-    <title>Projets | Mosab Ben Abdellah</title>
+    <meta name="description" content="Projets professionnels et académiques de Mosab BEN ABDELLAH - Software Engineering, Data, Cloud & DevOps.">
+    <title>Projets | Mosab BEN ABDELLAH</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,119 +88,244 @@
         <!-- PROJECT SECTION -->
         <section id="projects" class="section-padding hidden-scroll" style="padding-top: 120px; min-height: 80vh;">
             <div class="container">
-                <h2 style="margin-bottom: 3rem;">Projets Réalisés</h2>
+                <h2 style="margin-bottom: 2rem;">Projets & Réalisations</h2>
+                
+                <!-- Filters -->
+                <div class="project-filters" style="margin-bottom: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                    <button class="filter-btn active btn btn-primary" data-filter="all" style="padding: 0.5rem 1rem;">Tout</button>
+                    <button class="filter-btn btn btn-outline" data-filter="software" style="padding: 0.5rem 1rem;">Software Engineering</button>
+                    <button class="filter-btn btn btn-outline" data-filter="data" style="padding: 0.5rem 1rem;">Data/BI</button>
+                    <button class="filter-btn btn btn-outline" data-filter="cloud" style="padding: 0.5rem 1rem;">Cloud & DevOps</button>
+                    <button class="filter-btn btn btn-outline" data-filter="ia" style="padding: 0.5rem 1rem;">IA</button>
+                    <button class="filter-btn btn btn-outline" data-filter="mobile" style="padding: 0.5rem 1rem;">Mobile</button>
+                </div>
+
                 <div class="projects-grid">
 
-                    <!-- Projet : Dirhamy (New Highlight) -->
-                    <article class="project-card">
-                        <div class="project-cover">
-                            <img src="assets/projects/dirhamy.png" alt="Dirhamy Project" class="project-cover-img">
+                    <!-- Projet : TMPA UI Builder -->
+                    <article class="project-card" data-category="software">
+                        <div class="project-cover" style="background: #F2F4F7;">
+                            <img src="assets/projects/tmpa-logo.png" alt="Logo du projet TMPA UI Builder" class="project-cover-img" style="background-color: transparent;" onerror="this.src='assets/logo-mba-dark.png'">
                         </div>
                         <div class="project-content">
-                            <h3 class="project-title">Dirhamy - Suivi de Dépenses & IA</h3>
-                            <p style="margin-bottom: 1rem;">
-                                Application de gestion financière intelligente. Architecture <strong>Cloud AWS</strong>
-                                avec pipeline CI/CD complet.
-                            </p>
-
-                            <div
-                                style="background: rgba(0,0,0,0.03); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--primary); margin-bottom: 1.2rem; font-size: 0.85rem;">
-                                <strong style="display:block; margin-bottom:0.4rem;">Infrastructure DevOps (AWS)
-                                    :</strong>
-                                <ul style="margin: 0; padding-left: 0; list-style-type: none;">
-                                    <li style="margin-bottom:0.3rem;"><i class="fas fa-code-branch"
-                                            style="color:var(--primary); width:20px;"></i><strong>PR</strong> &rarr;
-                                        Tests Auto</li>
-                                    <li style="margin-bottom:0.3rem;"><i class="fas fa-cube"
-                                            style="color:var(--primary); width:20px;"></i><strong>Dev</strong> &rarr;
-                                        Build & Push Docker</li>
-                                    <li><i class="fas fa-rocket"
-                                            style="color:var(--primary); width:20px;"></i><strong>Main</strong> &rarr;
-                                        Deploy EC2 (Prod)</li>
-                                </ul>
+                            <span class="tag" style="background: var(--primary); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Professionnel (TMPA)</span>
+                            <h3 class="project-title">TMPA UI Builder</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Stage PFA (2026). Plateforme interne No-Code / Low-Code.<br>
+                            <strong>Fonctionnalités :</strong> Éditeur visuel, positionnement de composants, gestion des rôles (Admin/User-Developer), versioning, restauration, et workflow de publication.<br>
+                            <strong>Technique :</strong> API REST avec MongoDB Replica Set, transactions pour la cohérence, architecture conteneurisée.</p>
+                            
+                            <div class="project-tags">
+                                <span class="tag">React/TS</span>
+                                <span class="tag">Node.js</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">Docker</span>
                             </div>
+                        </div>
+                    </article>
 
+                    <!-- Projet : Data Warehouse & ETL Pipeline -->
+                    <article class="project-card" data-category="data">
+                        <div class="project-cover">
+                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #047857 0%, #10b981 100%); display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-database" style="font-size: 3rem; color: white; opacity:0.8;"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique</span>
+                            <h3 class="project-title">Data Warehouse & ETL Pipeline</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Conception d'une chaîne décisionnelle complète.<br>
+                            <strong>Travail :</strong> Ingestion (CSV, Excel), staging, modélisation dimensionnelle (schéma en étoile). Transformations ETL avec dédoublonnage, mapping, gestion des rejets et validation SQL. Dashboards de restitution.</p>
+                            
+                            <div class="project-tags">
+                                <span class="tag">Pentaho DI</span>
+                                <span class="tag">PostgreSQL</span>
+                                <span class="tag">Power BI / DAX</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet : StreamLine -->
+                    <article class="project-card" data-category="software cloud">
+                        <div class="project-cover">
+                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%); display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-network-wired" style="font-size: 3rem; color: white; opacity:0.8;"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique</span>
+                            <h3 class="project-title">StreamLine – Plateforme Vidéo</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Déploiement d'une application sur infrastructure distribuée.<br>
+                            <strong>Rôle (Infra) :</strong> Provisioning de 5 VMs (Frontend/Nginx, Backend/API, DB, Stockage objet, Monitoring). Conteneurisation et observabilité avec séparation stricte des responsabilités.</p>
+                            
+                            <div class="project-tags">
+                                <span class="tag">Docker/Vagrant</span>
+                                <span class="tag">MinIO</span>
+                                <span class="tag">Prometheus/Grafana</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet : Wasil -->
+                    <article class="project-card" data-category="software cloud">
+                        <div class="project-cover">
+                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%); display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-truck-fast" style="font-size: 3rem; color: white; opacity:0.8;"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique (Équipe)</span>
+                            <h3 class="project-title">Wasil – Plateforme de Livraison</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Conception d'une plateforme métier orientée services.<br>
+                            <strong>Travail :</strong> Développement du Backend (C#/.NET) structuré en microservices, configuration de la conteneurisation Docker, et automatisation du pipeline CI/CD.</p>
+                            
+                            <div class="project-tags">
+                                <span class="tag">C# / .NET</span>
+                                <span class="tag">Microservices</span>
+                                <span class="tag">Docker / CI-CD</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet : Moroccan Coins Detection -->
+                    <article class="project-card" data-category="ia software">
+                        <div class="project-cover">
+                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-coins" style="font-size: 3rem; color: white; opacity:0.8;"></i>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique (Binôme)</span>
+                            <h3 class="project-title">Moroccan Coins Detection</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Computer Vision (YOLOv8). Détection de pièces marocaines et calcul du montant total.<br>
+                            <strong>Travail :</strong> Collecte d'images, annotation (Roboflow), entraînement YOLOv8n, évaluation (Precision: 95.7%, mAP@50: 98.6%) et intégration Streamlit.</p>
+                            
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">YOLOv8</span>
+                                <span class="tag">Streamlit</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet : Dirhamy -->
+                    <article class="project-card" data-category="software cloud">
+                        <div class="project-cover">
+                            <img src="assets/projects/dirhamy.png" alt="Dirhamy Project" class="project-cover-img" onerror="this.src='assets/logo-mba-dark.png'">
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Personnel</span>
+                            <h3 class="project-title">Dirhamy - Suivi de Dépenses</h3>
+                            <p style="margin-bottom: 1rem;">Application de gestion financière. Pipeline CI/CD avec automatisation du test (PR), build (Dev), et déploiement Docker sur une instance EC2 (AWS).</p>
                             <div class="project-tags">
                                 <span class="tag">AWS (EC2)</span>
                                 <span class="tag">Docker/CI-CD</span>
                                 <span class="tag">Node.js/React</span>
                             </div>
-
                             <div class="project-links" style="margin-top: 1.5rem; display: flex; gap: 0.8rem;">
-                                <a href="https://dirhamy.com/" target="_blank" class="btn btn-primary"
-                                    style="padding: 0.5rem 1rem; font-size: 0.9rem;">
-                                    <i class="fas fa-external-link-alt"></i> Site Live
+                                <a href="https://dirhamy.com/" target="_blank" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                    <i class="fas fa-external-link-alt"></i> Site
                                 </a>
-                                <a href="https://github.com/MYH-Projet/dirhamy" target="_blank" class="btn btn-outline"
-                                    style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                <a href="https://github.com/MYH-Projet/dirhamy" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
                                     <i class="fab fa-github"></i> Code
                                 </a>
                             </div>
                         </div>
                     </article>
-                    <!-- Projet 1 : MDGS Migration -->
-                    <article class="project-card">
+
+                    <!-- Projet : GrowTrack (Soft Skills App) -->
+                    <article class="project-card" data-category="software cloud">
                         <div class="project-cover">
-                            <!-- Placeholder image or reuse existing -->
-                            <div
-                                style="width:100%; height:170px; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); display:flex; align-items:center; justify-content:center;">
+                            <img src="assets/projects/growtrack.png" alt="Grow Track Logo" class="project-cover-img" onerror="this.src='assets/logo-mba-dark.png'">
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique (Équipe)</span>
+                            <h3 class="project-title">Évaluation Soft Skills (GrowTrack)</h3>
+                            <p style="margin-bottom: 1rem;">Plateforme d'évaluation et de reporting. Coordination technique de l'infrastructure DevOps avec conteneurisation et déploiement via GitHub Actions.</p>
+                            <div class="project-tags">
+                                <span class="tag">Docker</span>
+                                <span class="tag">GitHub Actions</span>
+                                <span class="tag">Cloud</span>
+                            </div>
+                            <div class="project-links" style="margin-top: 1.5rem;">
+                                <a href="https://github.com/jawad3213/GrowTrackiiiiyyyy" target="_blank" class="btn btn-outline" style="display:block; text-align:center; padding: 0.5rem 1rem;">
+                                    <i class="fab fa-github"></i> Code
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet : MDGS Migration -->
+                    <article class="project-card" data-category="software data">
+                        <div class="project-cover">
+                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); display:flex; align-items:center; justify-content:center;">
                                 <i class="fas fa-server" style="font-size: 3rem; color: white; opacity:0.8;"></i>
                             </div>
                         </div>
                         <div class="project-content">
-                            <h3 class="project-title">Migration MDGS - Plateforme Industrielle</h3>
-                            <p>Migration complète d'une solution Power Apps vers une architecture web robuste pour la
-                                gestion industrielle.</p>
+                            <span class="tag" style="background: var(--primary); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Professionnel (Yazaki)</span>
+                            <h3 class="project-title">Migration MDGS</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Stage Été 2025. Migration complexe d'une solution Low-Code vers une application Web sur mesure.<br>
+                            <strong>Travail :</strong> Modélisation des processus, restructuration de la base de données relationnelle et développement Backend sécurisé.</p>
                             <div class="project-tags">
                                 <span class="tag">Node.js</span>
-                                <span class="tag">Express.js</span>
                                 <span class="tag">PostgreSQL</span>
                                 <span class="tag">Conception SI</span>
                             </div>
                         </div>
                     </article>
 
-                    <!-- Projet 2 : Soft Skills App -->
-                    <article class="project-card">
+                    <!-- Projet : Digitalisation Qualité -->
+                    <article class="project-card" data-category="software">
                         <div class="project-cover">
-                            <img src="assets/projects/growtrack.png" alt="Grow Track Logo" class="project-cover-img">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">App Évaluation Soft Skills</h3>
-                            <p>Plateforme d'évaluation et reporting. Architecture CI/CD automatisée avec
-                                conteneurisation.</p>
-                            <div class="project-tags">
-                                <span class="tag">Docker</span>
-                                <span class="tag">GitHub Actions</span>
-                                <span class="tag">Cloud (Railway/AWS)</span>
-                            </div>
-
-                            <div class="project-links" style="margin-top: 1.5rem;">
-                                <a href="https://github.com/jawad3213/GrowTrackiiiiyyyy" target="_blank"
-                                    class="btn btn-outline"
-                                    style="display:block; text-align:center; padding: 0.5rem 1rem;">
-                                    <i class="fab fa-github"></i> Voir le Repository
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Projet 3 : Power Apps -->
-                    <article class="project-card">
-                        <div class="project-cover">
-                            <div
-                                style="width:100%; height:170px; background: linear-gradient(135deg, #7c3aed 0%, #2dd4bf 100%); display:flex; align-items:center; justify-content:center;">
+                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #7c3aed 0%, #2dd4bf 100%); display:flex; align-items:center; justify-content:center;">
                                 <i class="fas fa-mobile-alt" style="font-size: 3rem; color: white; opacity:0.8;"></i>
                             </div>
                         </div>
                         <div class="project-content">
+                            <span class="tag" style="background: var(--primary); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Professionnel (Yazaki)</span>
                             <h3 class="project-title">Digitalisation Processus Qualité</h3>
-                            <p>Application mobile pour la digitalisation des processus terrain et remontée d'incidents.
-                            </p>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Stage Été 2024. Digitalisation terrain suite à des analyses Gemba Walk et TRIZ.<br>
+                            <strong>Travail :</strong> Conception UX/UI de l'application, intégration SharePoint, tableaux de bord Power BI et recette utilisateur.</p>
                             <div class="project-tags">
                                 <span class="tag">Power Apps</span>
+                                <span class="tag">Power BI</span>
                                 <span class="tag">SharePoint</span>
-                                <span class="tag">Validation UX</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- Projet : BookNest -->
+                    <article class="project-card" data-category="mobile software">
+                        <div class="project-cover" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            <img src="assets/projects/booknest.png" alt="Logo du projet BookNest" class="project-cover-img" style="background-color: transparent;" onerror="this.src='assets/logo-mba-dark.png'">
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique</span>
+                            <h3 class="project-title">BookNest – App Hôtelière</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Application mobile de réservation.<br>
+                            <strong>Travail :</strong> Développement Flutter (MVC, Material Design). Authentification, gestion de favoris, génération PDF, messagerie client/admin (Cloud Firestore).</p>
+                            <div class="project-tags">
+                                <span class="tag">Flutter</span>
+                                <span class="tag">Firebase</span>
+                                <span class="tag">Dart</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Projet : BricoliRent -->
+                    <article class="project-card" data-category="software">
+                        <div class="project-cover" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                            <img src="assets/projects/Logo de Bricolirent.png" alt="Logo du projet BricoliRent" class="project-cover-img" style="background-color: transparent;" onerror="this.src='assets/logo-mba-dark.png'">
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique</span>
+                            <h3 class="project-title">BricoliRent – Location d'Outils</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Application Web de gestion complète (Espaces Client, Agent, Admin).<br>
+                            <strong>Travail :</strong> Architecture MVC avec JSF/Facelets, CDI pour les services métier, et Hibernate/DAO pour la persistance PostgreSQL.</p>
+                            <div class="project-tags">
+                                <span class="tag">Java EE / JSF</span>
+                                <span class="tag">Hibernate</span>
+                                <span class="tag">PostgreSQL</span>
                             </div>
                         </div>
                     </article>
@@ -208,6 +333,47 @@
                 </div>
             </div>
         </section>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const buttons = document.querySelectorAll('.filter-btn');
+                const cards = document.querySelectorAll('.project-card');
+                const grid = document.querySelector('.projects-grid');
+
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all
+                        buttons.forEach(btn => {
+                            btn.classList.remove('btn-primary', 'active');
+                            btn.classList.add('btn-outline');
+                        });
+                        // Add active class to clicked
+                        button.classList.add('btn-primary', 'active');
+                        button.classList.remove('btn-outline');
+
+                        const filter = button.getAttribute('data-filter');
+                        let visibleCount = 0;
+
+                        cards.forEach(card => {
+                            if (filter === 'all' || card.getAttribute('data-category').includes(filter)) {
+                                card.style.display = 'flex';
+                                visibleCount++;
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+
+                        // Centrage pour 1 ou 2 projets visibles
+                        grid.classList.remove('grid-center-1', 'grid-center-2');
+                        if (visibleCount === 1) {
+                            grid.classList.add('grid-center-1');
+                        } else if (visibleCount === 2) {
+                            grid.classList.add('grid-center-2');
+                        }
+                    });
+                });
+            });
+        </script>
     </main>
 
     <!-- FOOTER -->
