@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. PRELOADER (Robust Removal with Minimum Display Time)
     const preloader = document.getElementById('preloader');
-    const minDisplayTime = 500; // Minimum time in ms to show loader
+    const minDisplayTime = 0; // Removed artificial delay
     const startTime = Date.now();
 
     const removePreloader = () => {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 preloader.style.opacity = '0';
                 setTimeout(() => {
                     preloader.style.display = 'none';
-                }, 500); // Fade out duration matches CSS transition usually
+                }, 300); // Faster fade out
             }, remainingTime);
         }
     };
@@ -456,3 +456,24 @@ window.debugSmartPrompt = () => {
     console.log('[SmartPrompt] Storage cleared. Reload to test.');
 };
 
+// --- OPTIMISATION DES PERFORMANCES (PREFETCH) ---
+// Utilisation de la Speculation Rules API pour précharger intelligemment 
+// les pages principales (Projets et Expérience) uniquement au survol (moderate eagerness)
+// Cela élimine le délai réseau lors de la navigation sans surcharger la bande passante initiale.
+if (HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
+    const specScript = document.createElement('script');
+    specScript.type = 'speculationrules';
+    specScript.textContent = JSON.stringify({
+        prefetch: [{
+            source: "document",
+            where: {
+                or: [
+                    { href_matches: "/*projects.html" },
+                    { href_matches: "/*experience.html" }
+                ]
+            },
+            eagerness: "moderate"
+        }]
+    });
+    document.body.appendChild(specScript);
+}

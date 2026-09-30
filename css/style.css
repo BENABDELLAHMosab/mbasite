@@ -562,8 +562,8 @@ header {
 }
 
 .nav-link:hover,
-.nav-link.active {
-  color: var(--primary);
+.nav-link:focus-visible {
+  color: var(--text-main);
 }
 
 .nav-link::after {
@@ -1802,7 +1802,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #preloader.loaded {
