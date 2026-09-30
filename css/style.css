@@ -2139,7 +2139,7 @@ a:focus-visible {
 .nav-link.active {
   color: var(--primary) !important;
   position: relative;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .nav-link.active::after {
@@ -2148,11 +2148,15 @@ a:focus-visible {
   bottom: -4px;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background-color: var(--primary);
   border-radius: 2px;
   transform-origin: left;
   transform: scaleX(1);
+}
+
+[data-theme="dark"] .nav-link.active::after {
+  box-shadow: 0 2px 8px rgba(34, 211, 238, 0.4);
 }
 
 

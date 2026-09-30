@@ -211,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if ('IntersectionObserver' in window) {
         const observerOptions = {
+            rootMargin: '100px 0px', // Déclenchement anticipé
             threshold: 0 // Seuil 0 pour garantir le déclenchement sur les très longues sections mobiles
         };
 
@@ -224,9 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }, observerOptions);
 
         hiddenElements.forEach((el) => {
-            // On cache les éléments uniquement si le JS et l'Observer sont actifs
-            el.classList.add('js-hidden');
-            observer.observe(el);
+            // Optimisation : si l'élément est déjà dans le viewport au chargement, on ne le cache pas
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                el.classList.add('show-scroll');
+            } else {
+                // On cache les éléments uniquement s'ils sont hors écran
+                el.classList.add('js-hidden');
+                observer.observe(el);
+            }
         });
 
         // Mécanisme de secours (Fallback) : force l'affichage après 2 secondes 
