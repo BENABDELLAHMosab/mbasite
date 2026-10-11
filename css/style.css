@@ -628,10 +628,15 @@ header {
   align-items: center;
   justify-content: center;
   padding-top: var(--header-height);
+  padding-bottom: 2rem;
   position: relative;
   overflow: hidden;
-  /* Prevent blob spill */
-  position: relative;
+}
+
+@media (max-width: 991px) {
+  #top {
+    padding-bottom: 5.5rem; /* Marge de respiration garantissant qu'aucun CTA n'est masqué */
+  }
 }
 
 /* SNOWEB STYLE WAVE (Dark Mode Only)
@@ -782,7 +787,7 @@ header {
 }
 
 .credibility-line {
-  margin-top: 3rem;
+  margin-top: 2rem;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-light);
@@ -2416,12 +2421,4 @@ a:focus-visible {
   border-radius: 4px;
   margin-left: 4px;
   font-weight: 500;
-}
-
-/* Correction alignement horizontal boutons CV */
-@media (min-width: 992px) {
-  .hero-cv-wrapper,
-  [data-theme="dark"] .hero-cv-wrapper {
-    flex-wrap: nowrap !important;
-  }
-}
+}
