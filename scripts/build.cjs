@@ -96,7 +96,7 @@ function build(root = path.resolve(__dirname, '..')) {
         write(file, fs.readFileSync(path.join(root, file)));
     }
     // Licenses travel with the self-hosted font and SVG glyphs.
-    for (const file of ['assets/fonts/OFL.txt', 'assets/icons/FONT-AWESOME-LICENSE.txt', 'robots.txt', 'sitemap.xml']) {
+    for (const file of ['assets/fonts/OFL.txt', 'assets/icons/FONT-AWESOME-LICENSE.txt', 'assets/icons/BRAND-SOURCES.md', 'robots.txt', 'sitemap.xml']) {
         write(file, fs.readFileSync(path.join(root, file)));
     }
     write('asset-manifest.json', JSON.stringify(manifest, null, 2) + '\n');

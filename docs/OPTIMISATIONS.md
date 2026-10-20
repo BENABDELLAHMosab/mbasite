@@ -55,7 +55,7 @@ Un sitemap, les URL canoniques des sous-pages et `robots.txt` ont été ajoutés
 
 - Installation propre : `npm ci --ignore-scripts` ; aucune dépendance à installer.
 - 32 tests Node : préférence de thème, synchronisation, historique, stockage indisponible, préchargement bloqué, encodage du contact, construction déterministe, renouvellement des URL lorsque le contenu change et fermeture globale des suggestions.
-- Construction : huit pages et trente ressources versionnées.
+- Construction : huit pages et trente-deux ressources versionnées.
 - Navigateur Chromium : huit pages × cinq largeurs (320, 390, 768, 991, 1 366 px) × deux thèmes, soit 80 combinaisons. Contrôles du débordement, des images, des erreurs JavaScript, des violations CSP et des ressources externes.
 - Scénarios réels : navigation entre pages et onglets, menu au clavier, rail au défilement dans les deux sens, filtres, animation de la photo, contact avec messagerie simulée, retour en haut, mouvement réduit, JavaScript désactivé, script retardé de 4,2 secondes, stockage bloqué ou plein, page 404 imbriquée, cache et en-têtes.
 - Captures de référence et comparaison de la géométrie sur ordinateur et mobile, en clair et en sombre.
@@ -81,3 +81,9 @@ Les URL publiques `/assets/logo-mba-light.png` et `/assets/logo-mba-dark.png` so
 La fermeture par × ou « Plus tard » est maintenant enregistrée pour l’ensemble du site dans `localStorage` (`portfolio-tour-dismissed = true`), sans expiration de 24 heures. Elle est respectée après rafraîchissement, navigation et nouvelle visite dans le même navigateur. Les anciennes fermetures par page sont reprises automatiquement. Les événements de stockage synchronisent les onglets déjà ouverts ; le retour depuis l’historique et le délai avant apparition vérifient également ce choix.
 
 Douze tests supplémentaires exercent les véritables gestionnaires du script avec un DOM simulé et une horloge contrôlée : les deux boutons de fermeture, les sept pages, les visites suivantes, les anciens choix, les onglets ouverts ou en attente, l’historique, une animation différée et le stockage indisponible. Ils vérifient aussi que le bouton d’acceptation continue à naviguer et que la préférence de thème reste intacte. Aucun style de la fenêtre n’a été modifié.
+
+## Icônes de contact colorées
+
+Les versions monochromes Gmail et WhatsApp sont remplacées par les SVG actuellement publiés sur les sites de Google et WhatsApp. Les filtres d’inversion des couleurs ont été supprimés. Les boutons LinkedIn et GitHub portent aussi leurs pictogrammes reconnaissables ; une petite surface blanche conserve leur contraste dans les deux thèmes. Les icônes de localisation et de téléphone ont des accents bleus/cyan et verts cohérents avec la page.
+
+Les boutons ont un léger soulèvement et un reflet au survol, un retour visuel à la pression et un focus visible au clavier. Les mouvements sont désactivés en mode de réduction des animations. Ces effets sont réalisés uniquement en CSS, sans bibliothèque ni calcul continu. Les liens e-mail, téléphone, WhatsApp et profils restent ceux déjà présents. La provenance des fichiers figure dans `assets/icons/BRAND-SOURCES.md`.

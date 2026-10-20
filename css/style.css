@@ -1371,12 +1371,12 @@ header {
   border-color: rgba(255, 255, 255, 0.18);
 }
 
-.icon-btn:hover {
+.icon-btn:not(.brand-action):hover {
   transform: translateY(-1px);
   background: rgba(0, 0, 0, 0.05);
 }
 
-[data-theme="dark"] .icon-btn:hover {
+[data-theme="dark"] .icon-btn:not(.brand-action):hover {
   background: rgba(255, 255, 255, 0.06);
 }
 
@@ -1384,10 +1384,6 @@ header {
   display: block;
   filter: none;
   opacity: 0.95;
-}
-
-[data-theme="dark"] .icon-btn img {
-  filter: invert(1);
 }
 
 /* --- FOOTER --- */
@@ -1458,13 +1454,10 @@ footer {
     border-color: rgba(255, 255, 255, 0.18);
   }
 
-  html:not([data-theme="light"]) .icon-btn:hover {
+  html:not([data-theme="light"]) .icon-btn:not(.brand-action):hover {
     background: rgba(255, 255, 255, 0.06);
   }
 
-  html:not([data-theme="light"]) .icon-btn img {
-    filter: invert(1);
-  }
 }
 
 /*

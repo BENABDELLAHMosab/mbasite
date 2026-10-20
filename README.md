@@ -51,6 +51,8 @@ Le workflow `.github/workflows/quality.yml` lance l’installation, les tests et
 
 Inter et les icônes sont hébergés localement. Leurs licences sont conservées dans `assets/fonts/OFL.txt` et `assets/icons/FONT-AWESOME-LICENSE.txt`. Les pictogrammes SVG Font Awesome correspondent aux glyphes déjà utilisés.
 
+Le contact utilise les fichiers de marque Gmail (version 2026) et WhatsApp publiés par leurs sites officiels, ainsi que les pictogrammes LinkedIn et GitHub. Les sources sont consignées dans `assets/icons/BRAND-SOURCES.md`. Les couleurs des logos restent identiques en clair et en sombre. Les effets de survol, de pression et de focus utilisent uniquement du CSS et sont désactivés lorsque le visiteur demande une réduction des animations.
+
 Les quatre images de projets converties en WebP conservent leurs pixels visibles. La photo utilise quatre variantes WebP de haute qualité (320, 480, 768 et 1 000 px) ; le navigateur choisit la résolution adaptée à l’écran. Le JPEG d’origine reste le secours et l’image de partage. Le mouvement CSS original de la photo (`blob-bounce`, 6 secondes) est conservé et respecte la préférence de réduction des animations.
 
 ## Contact
