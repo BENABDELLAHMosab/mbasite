@@ -23,11 +23,11 @@
         const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
         if (toggleSwitch) toggleSwitch.checked = theme === 'dark';
 
-        const logoPath = theme === 'light' ? 'assets/logo-mba-light.png' : 'assets/logo-mba-dark.png';
+        const logoPath = theme === 'light' ? '/assets/logo-mba-light.png' : '/assets/logo-mba-dark.png';
         const favicon = document.querySelector('link[rel="icon"]');
-        const brandLogo = document.getElementById('brandLogo');
         if (favicon) favicon.setAttribute('href', logoPath);
-        if (brandLogo) brandLogo.setAttribute('src', logoPath);
+        // Keep the logo URL selected by the HTML/build. CSS already adapts its
+        // colour in both themes, without replacing the image or fetching it again.
     }
 
     readPreference();

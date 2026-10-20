@@ -1,8 +1,11 @@
 {
+  "name": "mosab-portfolio",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "test": "node --test tests/theme.test.js"
+    "test": "node --test tests/*.test.js",
+    "build": "node scripts/build.cjs",
+    "preview": "node scripts/preview.cjs"
   },
-  "devDependencies": {
-    "javascript-obfuscator": "^5.1.0"
-  }
+  "engines": { "node": ">=22" }
 }

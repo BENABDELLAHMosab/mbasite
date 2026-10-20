@@ -11,7 +11,7 @@
   --journey-track: rgba(148, 163, 184, 0.22);
 }
 
-.journey-page main h2::after {
+.journey-page main :is(h2, h1.page-title)::after {
   content: '';
   display: block;
   width: 3rem;

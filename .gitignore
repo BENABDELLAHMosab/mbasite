@@ -1,6 +1,8 @@
 node_modules/
-package-lock.json
+dist/
 .DS_Store
 *.log
-.env
+.env*
+!.env.example
+.vercel/
 obfuscator-config.json

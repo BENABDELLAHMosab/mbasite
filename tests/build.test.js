@@ -1,0 +1,63 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
+const { createHash } = require('node:crypto');
+const { build } = require('../scripts/build.cjs');
+const root = path.resolve(__dirname, '..');
+
+test('production resources are reachable, hashed by content, deterministic and isolated from source files', () => {
+    // Build a temporary copy so npm test never modifies a running dist/ preview.
+    const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'portfolio-build-'));
+    try {
+        const excluded = new Set(['.git', 'node_modules', 'dist', '.agents', '.codex']);
+        for (const file of fs.readdirSync(root)) {
+            if (!excluded.has(file)) fs.cpSync(path.join(root, file), path.join(temp, file), { recursive: true });
+        }
+        const { output, manifest } = build(temp);
+        for (const [source, url] of Object.entries(manifest)) {
+            const data = fs.readFileSync(path.join(output, decodeURI(url)));
+            const hash = createHash('sha256').update(data).digest('hex').slice(0, 12);
+            assert.ok(url.includes('.' + hash + '.'), source);
+        }
+        for (const file of fs.readdirSync(output).filter(f => f.endsWith('.html'))) {
+            const html = fs.readFileSync(path.join(output, file), 'utf8');
+            assert.match(html, /^<!DOCTYPE html>/);
+            assert.equal((html.match(/<h1\b/g) || []).length, 1, file);
+            for (const match of html.matchAll(/\b(?:src|href|data-fallback-src)="(\/static\/[^"<>]+)"/g)) {
+                assert.ok(fs.existsSync(path.join(output, decodeURI(match[1]))), `${file}: ${match[1]}`);
+            }
+            assert.doesNotMatch(html, /<script\b(?![^>]*\bsrc=)[^>]*>\s*\S|\son\w+\s*=/i);
+            assert.doesNotMatch(html, /cdnjs|fonts\.googleapis|three\.min\.js|background\.js/);
+        }
+        const css = fs.readFileSync(path.join(output, decodeURI(manifest['css/style.css'])), 'utf8');
+        assert.ok(css.includes(manifest['assets/fonts/inter-latin.woff2']));
+        assert.ok(css.includes('url(%23noiseFilter)'), 'embedded SVG data URL stays intact');
+        const boot = fs.readFileSync(path.join(output, decodeURI(manifest['js/boot.js'])), 'utf8');
+        assert.ok(boot.includes(manifest['assets/logo-mba-light.png']));
+        assert.ok(boot.includes(manifest['assets/logo-mba-dark.png']));
+        // Existing tabs can still request these public URLs after an optimized build.
+        for (const theme of ['light', 'dark']) {
+            const file = `assets/logo-mba-${theme}.png`;
+            assert.deepEqual(fs.readFileSync(path.join(output, file)), fs.readFileSync(path.join(root, file)));
+        }
+        const home = fs.readFileSync(path.join(output, 'index.html'), 'utf8');
+        for (const width of [320, 480, 768, 1000]) {
+            assert.ok(home.includes(manifest[`Img/profile-${width}.webp`] + ' ' + width + 'w'));
+        }
+        assert.deepEqual(build(temp).manifest, manifest);
+        fs.appendFileSync(path.join(temp, 'assets/fonts/inter-latin.woff2'), Buffer.from([0]));
+        const changed = build(temp).manifest;
+        assert.notEqual(changed['assets/fonts/inter-latin.woff2'], manifest['assets/fonts/inter-latin.woff2']);
+        assert.notEqual(changed['css/style.css'], manifest['css/style.css'], 'a nested dependency invalidates the CSS URL');
+        assert.equal(changed['Img/profile_main.jpg'], manifest['Img/profile_main.jpg'], 'unrelated resources keep their cache URL');
+        assert.equal(fs.existsSync(path.join(output, 'package.json')), false);
+        assert.equal(fs.existsSync(path.join(output, 'js/script.obfuscated.js')), false);
+        assert.ok(fs.existsSync(path.join(output, 'document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf')));
+    } finally {
+        // temp is created by mkdtemp under the OS temp directory, never supplied externally.
+        assert.ok(path.resolve(temp).startsWith(path.resolve(os.tmpdir()) + path.sep));
+        fs.rmSync(temp, { recursive: true, force: true });
+    }
+});

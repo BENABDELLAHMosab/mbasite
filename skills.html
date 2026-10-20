@@ -1,38 +1,33 @@
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <script src="js/theme.js"></script>
+    <script src="js/preloader.js"></script>
     <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Compétences techniques de Mosab BEN ABDELLAH - Software Engineering, Data Engineering, DevOps.">
     <title>Compétences | Mosab BEN ABDELLAH</title>
+    <link rel="canonical" href="https://www.benabdellahmosab.com/skills.html">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/logo-mba-dark.png">
 </head>
 
 <body>
+    <a href="#main" class="skip-link">Aller au contenu</a>
     <!-- PRELOADER -->
-    <div id="preloader">
+    <div id="preloader" aria-hidden="true">
         <div class="loader-content">
             <div class="loader-logo-container">
-                <img src="assets/logo-mba-light.png" alt="Loader Logo" class="loader-logo">
+                <img width="554" height="505" src="assets/logo-mba-light.png" alt="Loader Logo" class="loader-logo">
             </div>
             <div class="loader-ring"></div>
         </div>
@@ -42,7 +37,7 @@
     <header>
         <div class="container nav-container">
             <a href="index.html" class="brand" aria-label="Retour à l'accueil">
-                <img id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
+                <img width="554" height="505" id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
             </a>
 
             <nav>
@@ -60,7 +55,7 @@
             <div class="header-actions">
                 <div class="theme-switch-wrapper">
                     <label class="theme-switch" for="checkbox">
-                        <input type="checkbox" id="checkbox" />
+                        <input type="checkbox" id="checkbox" aria-label="Activer le thème sombre" />
                         <div class="slider round"></div>
                     </label>
                 </div>
@@ -76,7 +71,7 @@
     </header>
 
     <!-- MOBILE MENU OVERLAY -->
-    <div class="mobile-nav-overlay">
+    <div class="mobile-nav-overlay" inert aria-hidden="true">
         <a href="about.html" class="nav-link">À propos</a>
         <a href="skills.html" class="nav-link active">Compétences</a>
         <a href="services.html" class="nav-link">Services</a>
@@ -85,16 +80,16 @@
         <a href="contact.html" class="nav-link">Contact</a>
     </div>
 
-    <main>
+    <main id="main" tabindex="-1">
         <!-- SKILLS SECTION -->
         <section id="skills" class="section-padding hidden-scroll" style="padding-top: 120px; min-height: 80vh;">
             <div class="container">
-                <h2 class="section-title">Compétences Techniques</h2>
-                <div class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <h1 class="page-title section-title">Compétences Techniques</h1>
+                <div class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 2rem;">
                     <!-- Catégorie 1: Langages -->
                     <div class="skill-card">
                         <div style="width:56px; height:56px; margin-bottom:1rem; display:flex; align-items:center;">
-                            <i class="fas fa-code" style="font-size: 40px; color: var(--primary);"></i>
+                            <svg class="fa-icon fas fa-code" style="width: 1.25em; font-size: 40px; color: var(--primary);" viewBox="0 0 640 512" aria-hidden="true" focusable="false"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg>
                         </div>
                         <h3 style="margin-bottom: 1.5rem;">Langages</h3>
                         <div class="skill-tags">
@@ -110,7 +105,7 @@
                     <!-- Catégorie 2: Backend & Frontend -->
                     <div class="skill-card">
                         <div style="width:56px; height:56px; margin-bottom:1rem; display:flex; align-items:center;">
-                            <i class="fas fa-laptop-code" style="font-size: 40px; color: var(--primary);"></i>
+                            <svg class="fa-icon fas fa-laptop-code" style="width: 1.25em; font-size: 40px; color: var(--primary);" viewBox="0 0 640 512" aria-hidden="true" focusable="false"><path d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V352H512V96H128V352H64V96zM0 403.2C0 392.6 8.6 384 19.2 384H620.8c10.6 0 19.2 8.6 19.2 19.2c0 42.4-34.4 76.8-76.8 76.8H76.8C34.4 480 0 445.6 0 403.2zM281 209l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-48-48c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM393 175l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>
                         </div>
                         <h3 style="margin-bottom: 1.5rem;">Backend & Frontend</h3>
                         <div class="skill-tags">
@@ -126,7 +121,7 @@
                     <!-- Catégorie 3: Bases de Données -->
                     <div class="skill-card">
                         <div style="width:56px; height:56px; margin-bottom:1rem; display:flex; align-items:center;">
-                            <i class="fas fa-database" style="font-size: 40px; color: var(--primary);"></i>
+                            <svg class="fa-icon fas fa-database" style="width: 0.875em; font-size: 40px; color: var(--primary);" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M448 80v48c0 44.2-100.3 80-224 80S0 172.2 0 128V80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6V288c0 44.2-100.3 80-224 80S0 332.2 0 288V186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6V432c0 44.2-100.3 80-224 80S0 476.2 0 432V346.1z"/></svg>
                         </div>
                         <h3 style="margin-bottom: 1.5rem;">Bases de Données</h3>
                         <div class="skill-tags">
@@ -139,7 +134,7 @@
                     <!-- Catégorie 4: Data Engineering & BI -->
                     <div class="skill-card">
                         <div style="width:56px; height:56px; margin-bottom:1rem; display:flex; align-items:center;">
-                            <i class="fas fa-chart-pie" style="font-size: 40px; color: var(--primary);"></i>
+                            <svg class="fa-icon fas fa-chart-pie" style="width: 1.125em; font-size: 40px; color: var(--primary);" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M304 240V16.6c0-9 7-16.6 16-16.6C443.7 0 544 100.3 544 224c0 9-7.6 16-16.6 16H304zM32 272C32 150.7 122.1 50.3 239 34.3c9.2-1.3 17 6.1 17 15.4V288L412.5 444.5c6.7 6.7 6.2 17.7-1.5 23.1C371.8 495.6 323.8 512 272 512C139.5 512 32 404.6 32 272zm526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288H558.4z"/></svg>
                         </div>
                         <h3 style="margin-bottom: 1.5rem;">Data Engineering & BI</h3>
                         <div class="skill-tags">
@@ -153,7 +148,7 @@
                     <!-- Catégorie 5: DevOps & Infrastructure -->
                     <div class="skill-card">
                         <div style="width:56px; height:56px; margin-bottom:1rem; display:flex; align-items:center;">
-                            <i class="fas fa-server" style="font-size: 40px; color: var(--primary);"></i>
+                            <svg class="fa-icon fas fa-server" style="width: 1em; font-size: 40px; color: var(--primary);" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M64 32C28.7 32 0 60.7 0 96v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm48 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM64 288c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V352c0-35.3-28.7-64-64-64H64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm56 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"/></svg>
                         </div>
                         <h3 style="margin-bottom: 1.5rem;">DevOps & Infrastructure</h3>
                         <div class="skill-tags">
@@ -168,7 +163,7 @@
                     <!-- Catégorie 6: Architecture & Conception -->
                     <div class="skill-card">
                         <div style="width:56px; height:56px; margin-bottom:1rem; display:flex; align-items:center;">
-                            <i class="fas fa-sitemap" style="font-size: 40px; color: var(--primary);"></i>
+                            <svg class="fa-icon fas fa-sitemap" style="width: 1.125em; font-size: 40px; color: var(--primary);" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M208 80c0-26.5 21.5-48 48-48h64c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-8v40H464c30.9 0 56 25.1 56 56v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H464c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-4.4-3.6-8-8-8H312v40h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H256c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V280H112c-4.4 0-8 3.6-8 8v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-30.9 25.1-56 56-56H264V192h-8c-26.5 0-48-21.5-48-48V80z"/></svg>
                         </div>
                         <h3 style="margin-bottom: 1.5rem;">Architecture & Conception</h3>
                         <div class="skill-tags">
@@ -191,18 +186,18 @@
         </div>
     </footer>
 
+    <!-- Font Awesome Free 6.5.1 by @fontawesome (fontawesome.com), icons CC BY 4.0.
+         License and attribution: /assets/icons/FONT-AWESOME-LICENSE.txt -->
     <!-- SCROLL PROGRESS BUTTON -->
-    <div class="progress-wrap" id="progressWrap">
+    <div class="progress-wrap" id="progressWrap" role="button" tabindex="0" aria-label="Revenir en haut de la page">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
-        <i class="fa-solid fa-arrow-up progress-arrow"></i>
+        <svg class="fa-icon fa-solid fa-arrow-up progress-arrow" style="width: 0.75em;" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
     </div>
 
     <!-- JS Script -->
     <script src="js/script.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script defer src="js/background.js"></script>
 </body>
 
 </html>

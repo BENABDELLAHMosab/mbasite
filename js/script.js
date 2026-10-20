@@ -1,30 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. PRELOADER (Robust Removal with Minimum Display Time)
-    const preloader = document.getElementById('preloader');
-    const minDisplayTime = 0; // Removed artificial delay
-    const startTime = Date.now();
-
-    const removePreloader = () => {
-        if (preloader && preloader.style.display !== 'none') {
-            const elapsedTime = Date.now() - startTime;
-            const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
-
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 300); // Faster fade out
-            }, remainingTime);
-        }
-    };
-
-    // Remove on window load (all assets loaded)
-    window.addEventListener('load', removePreloader);
-
-    // Fallback timeout (3 second safety - slightly longer to ensure min display)
-    setTimeout(removePreloader, 3000);
-
     // Set current year dynamically
     const yearSpan = document.getElementById('currentYear');
     if (yearSpan) {
@@ -40,21 +15,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.mobile-nav-overlay .nav-link');
 
     if (burger && mobileNav) {
-        burger.addEventListener('click', () => {
-            const isExpanded = burger.getAttribute('aria-expanded') === 'true';
-            burger.setAttribute('aria-expanded', !isExpanded);
-            mobileNav.classList.toggle('active');
-            burger.classList.toggle('active'); // Optional for burger animation if CSS supports it
+        const desktop = window.matchMedia('(min-width: 992px)');
+        const setOpen = (open, restoreFocus = false) => {
+            burger.setAttribute('aria-expanded', String(open));
+            burger.classList.toggle('active', open);
+            mobileNav.classList.toggle('active', open);
+            mobileNav.inert = !open;
+            mobileNav.setAttribute('aria-hidden', String(!open));
+            if (open) navLinks[0]?.focus({ preventScroll: true });
+            else if (restoreFocus) burger.focus({ preventScroll: true });
+        };
+        burger.addEventListener('click', () => setOpen(burger.getAttribute('aria-expanded') !== 'true'));
+        navLinks.forEach(link => link.addEventListener('click', () => setOpen(false)));
+        document.addEventListener('keydown', event => {
+            if (burger.getAttribute('aria-expanded') !== 'true') return;
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setOpen(false, true);
+            } else if (event.key === 'Tab') {
+                const first = burger, last = navLinks[navLinks.length - 1];
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            }
         });
-
-        // Close menu when a link is clicked
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileNav.classList.remove('active');
-                burger.setAttribute('aria-expanded', 'false');
-            });
-        });
+        desktop.addEventListener('change', () => { if (desktop.matches) setOpen(false); });
     }
+
+    // Images use one guarded fallback, including an error that occurred before this script loaded.
+    const fallbackImage = image => {
+        if (!(image instanceof HTMLImageElement) || !image.dataset.fallbackSrc) return;
+        const source = image.dataset.fallbackSrc;
+        delete image.dataset.fallbackSrc;
+        image.src = source;
+    };
+    document.addEventListener('error', event => fallbackImage(event.target), true);
+    document.querySelectorAll('img[data-fallback-src]').forEach(image => {
+        if (image.complete && image.naturalWidth === 0) fallbackImage(image);
+    });
 
     // 4. NAVIGATION ACTIVE STATE (Multi-page Highlight)
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
@@ -100,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollableHeight = scrollHeight - clientHeight;
 
             // Calculate Progress (0.0 to 1.0) with Clamp
-            const progress = Math.max(0, Math.min(1, scrollTop / scrollableHeight));
+            const progress = Math.max(0, Math.min(1, scrollableHeight > 0 ? scrollTop / scrollableHeight : 0));
 
             // Calculate Offset: Empty (pathLength) -> Full (0)
             const offset = pathLength - (pathLength * progress);
@@ -132,7 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         progressWrap.addEventListener('click', (event) => {
             event.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+        });
+
+        progressWrap.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                progressWrap.click();
+            }
         });
 
         // Initial Calculation
@@ -141,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- SCROLL REVEAL (Intersection Observer & Progressive Enhancement) ---
     const hiddenElements = document.querySelectorAll('.hidden-scroll');
-    
+
     if ('IntersectionObserver' in window) {
         const observerOptions = {
             rootMargin: '100px 0px', // Déclenchement anticipé
@@ -169,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Mécanisme de secours (Fallback) : force l'affichage après 2 secondes 
+        // Mécanisme de secours (Fallback) : force l'affichage après 2 secondes
         // pour garantir l'accessibilité au cas où l'animation resterait bloquée
         setTimeout(() => {
             hiddenElements.forEach((el) => {
@@ -180,25 +184,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
 
-    // 5. INITIALIZE 3D BACKGROUND (If present)
-    if (typeof init === 'function') {
-        // init() is defined in background.js
-        try {
-            init();
-        } catch (e) {
-            console.warn("Three.js background failed to init:", e);
-        }
-    }
-
     /*
     ========================================================================
-       8. SMART PROMPT (UX TOAST) [DEBUG MODE]
+       8. SMART PROMPT (UX TOAST)
     ========================================================================
     */
     class SmartPrompt {
         constructor() {
             this.timer = null;
             this.isShown = false; // Explicit init
+            this.dismissed = false;
+            this.dismissKey = 'portfolio-tour-dismissed';
+            this.prompt = null;
             this.idleTime = 10000; // 10s
             this.currentPath = window.location.pathname.split('/').pop() || 'index.html';
             if (this.currentPath === '') this.currentPath = 'index.html';
@@ -206,8 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Normalize path for clean keys
             this.routeKey = this.currentPath.replace('.html', '');
             if (this.routeKey === 'index') this.routeKey = 'home';
-
-            console.log('[SmartPrompt] Init on route:', this.routeKey);
 
             // Route Mapping
             this.routes = {
@@ -264,55 +259,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
         init() {
             const pageData = this.routes[this.routeKey];
-            if (!pageData) {
-                console.log('[SmartPrompt] No data for this route.');
+            if (!pageData || this.isDismissed()) {
                 return;
             }
 
-            // This optional prompt needs storage to respect its cooldown.
-            let dismissedAt;
-            let alreadyShown;
+            // If the browser cannot remember a dismissal, omit this optional UI.
             try {
-                dismissedAt = localStorage.getItem(`uxTourDismissed:${this.routeKey}`);
-                alreadyShown = sessionStorage.getItem(`uxTourShown:${this.routeKey}`);
+                if (sessionStorage.getItem(`uxTourShown:${this.routeKey}`)) return;
+                const probeKey = 'portfolio-tour-storage-check';
+                localStorage.setItem(probeKey, '1');
+                localStorage.removeItem(probeKey);
             } catch {
                 return;
             }
 
-            // Check Cooldown (24h)
-            if (dismissedAt) {
-                const elapsed = Date.now() - parseInt(dismissedAt, 10);
-                if (elapsed < 24 * 60 * 60 * 1000) {
-                    console.log('[SmartPrompt] Cooldown active. Elapsed:', elapsed);
-                    return; // Still in cooldown
-                }
-            }
+            const syncDismissal = () => {
+                if (this.isDismissed()) this.hidePrompt();
+            };
+            window.addEventListener('storage', event => {
+                if (event.key !== null && event.key !== this.dismissKey && !event.key.startsWith('uxTourDismissed:')) return;
+                try { if (event.storageArea !== localStorage) return; } catch { return; }
+                syncDismissal();
+            });
+            window.addEventListener('pageshow', syncDismissal);
 
-            // Check Session Shown
-            if (alreadyShown) {
-                console.log('[SmartPrompt] Already shown in this session.');
-                return;
-            }
-
-            // Start Timer (Strict 10s after load)
             this.startTimer();
         }
 
+        isDismissed() {
+            if (this.dismissed) return true;
+            try {
+                this.dismissed = localStorage.getItem(this.dismissKey) === 'true' ||
+                    sessionStorage.getItem(this.dismissKey) === 'true';
+                // Honor previous dismissals on any page, including the former 24h keys.
+                if (!this.dismissed && Object.keys(this.routes).some(route => {
+                    const saved = Number(localStorage.getItem(`uxTourDismissed:${route}`));
+                    return Number.isFinite(saved) && saved > 0;
+                })) this.rememberDismissal();
+            } catch {
+                this.dismissed = true;
+            }
+            return this.dismissed;
+        }
+
+        rememberDismissal() {
+            this.dismissed = true;
+            try {
+                localStorage.setItem(this.dismissKey, 'true');
+            } catch {
+                // A full local store must not prevent closing or navigating this session.
+                try { sessionStorage.setItem(this.dismissKey, 'true'); } catch { /* Keep the in-memory choice. */ }
+            }
+        }
+
+        hidePrompt() {
+            clearTimeout(this.timer);
+            this.timer = null;
+            const prompt = this.prompt;
+            this.prompt = null;
+            if (!prompt) return;
+            prompt.classList.add('hide');
+            prompt.classList.remove('visible');
+            prompt.style.opacity = '0';
+            document.body.classList.remove('ux-toast-open');
+            document.body.style.removeProperty('--ux-toast-height');
+            setTimeout(() => prompt.remove(), 400);
+        }
+
         startTimer() {
-            if (this.isShown) return;
-            console.log(`[SmartPrompt] Timer started. prompting in ${this.idleTime}ms`);
+            if (this.isShown || this.isDismissed()) return;
 
             // no activity listeners, just one timeout
             this.timer = setTimeout(() => {
-                console.log('[SmartPrompt] Timer fired!');
                 this.show();
             }, this.idleTime);
         }
 
         show() {
-            if (this.isShown) return;
+            // Recheck after the delay: another page/tab may have dismissed the tour.
+            if (this.isShown || this.isDismissed()) return;
             this.isShown = true;
-            console.log('[SmartPrompt] Showing toast...');
 
             const data = this.routes[this.routeKey];
             const html = `
@@ -335,6 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Bind Events & Animate
             const prompt = document.querySelector('.smart-prompt');
+            this.prompt = prompt;
             const btnClose = prompt.querySelector('.smart-close');
             const btnSecondary = prompt.querySelector('.btn-prompt-secondary');
             const btnPrimary = prompt.querySelector('.btn-prompt-primary');
@@ -345,18 +372,13 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const dismiss = () => {
-                console.log('[SmartPrompt] Dismissed');
-                prompt.classList.add('hide');
-                prompt.classList.remove('visible');
-                removeOpenClass(); // Reset UI overlap logic
-                localStorage.setItem(`uxTourDismissed:${this.routeKey}`, Date.now().toString());
-                setTimeout(() => prompt.remove(), 400);
+                this.rememberDismissal();
+                this.hidePrompt();
             };
 
             const navigate = () => {
-                console.log('[SmartPrompt] Navigating to', data.nextUrl);
                 removeOpenClass(); // Reset UI overlap logic
-                sessionStorage.setItem(`uxTourShown:${this.routeKey}`, 'true');
+                try { sessionStorage.setItem(`uxTourShown:${this.routeKey}`, 'true'); } catch { /* Navigation still works. */ }
                 window.location.href = data.nextUrl;
             };
 
@@ -366,6 +388,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Animate In (Force Layout Reflow)
             requestAnimationFrame(() => {
+                if (this.prompt !== prompt || this.isDismissed()) {
+                    this.hidePrompt();
+                    return;
+                }
                 prompt.offsetHeight; // force reflow
                 prompt.style.opacity = '1'; // Force override inline
                 prompt.classList.add('visible');
@@ -390,32 +416,3 @@ document.addEventListener('DOMContentLoaded', () => {
         initPrompt();
     }
 });
-
-// DEBUG HELPER (Console only)
-window.debugSmartPrompt = () => {
-    Object.keys(localStorage).forEach(k => { if(k.startsWith('uxTour')) localStorage.removeItem(k); });
-    Object.keys(sessionStorage).forEach(k => { if(k.startsWith('uxTour')) sessionStorage.removeItem(k); });
-    console.log('[SmartPrompt] Storage cleared. Reload to test.');
-};
-
-// --- OPTIMISATION DES PERFORMANCES (PREFETCH) ---
-// Utilisation de la Speculation Rules API pour précharger intelligemment 
-// les pages principales (Projets et Expérience) uniquement au survol (moderate eagerness)
-// Cela élimine le délai réseau lors de la navigation sans surcharger la bande passante initiale.
-if (HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
-    const specScript = document.createElement('script');
-    specScript.type = 'speculationrules';
-    specScript.textContent = JSON.stringify({
-        prefetch: [{
-            source: "document",
-            where: {
-                or: [
-                    { href_matches: "/*projects.html" },
-                    { href_matches: "/*experience.html" }
-                ]
-            },
-            eagerness: "moderate"
-        }]
-    });
-    document.body.appendChild(specScript);
-}

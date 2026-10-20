@@ -34,7 +34,7 @@ function createPage({ dark = false, storage = createStorage(), hasSwitch = true 
 
     const toggle = { ...eventTarget(), checked: false };
     const favicon = { setAttribute: (name, value) => { favicon[name] = value; } };
-    const logo = { setAttribute: (name, value) => { logo[name] = value; } };
+    const logo = { src: 'logo-selected-by-html.png', setAttribute: (name, value) => { logo[name] = value; } };
     const system = { ...eventTarget(), matches: dark };
     const timers = [];
     let domReady = false;
@@ -80,10 +80,10 @@ function createPage({ dark = false, storage = createStorage(), hasSwitch = true 
 test('all eight pages load the theme synchronously before every stylesheet', () => {
     for (const name of ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', '404']) {
         const html = readFileSync(join(root, `${name}.html`), 'utf8');
-        const themeScript = '<script src="js/theme.js"></script>';
+        const themeScript = /<script src="\/?js\/theme\.js"><\/script>/;
         assert.equal(html.split(themeScript).length - 1, 1, name);
-        assert.ok(html.indexOf(themeScript) < html.search(/<link\b[^>]*rel="stylesheet"/), name);
-        assert.ok(html.indexOf(themeScript) < html.indexOf('</head>'), name);
+        assert.ok(html.search(themeScript) < html.search(/<link\b[^>]*rel="stylesheet"/), name);
+        assert.ok(html.search(themeScript) < html.indexOf('</head>'), name);
     }
 });
 
@@ -112,8 +112,8 @@ for (const dark of [false, true]) {
         page.systemChange(dark);
         assert.equal(page.theme(), choice);
         assert.equal(page.colorScheme(), choice);
-        assert.equal(page.favicon.href, `assets/logo-mba-${choice}.png`);
-        assert.equal(page.logo.src, `assets/logo-mba-${choice}.png`);
+        assert.equal(page.favicon.href, `/assets/logo-mba-${choice}.png`);
+        assert.equal(page.logo.src, 'logo-selected-by-html.png');
         const nextPage = createPage({ dark, storage });
         assert.equal(nextPage.theme(), choice);
         nextPage.ready();
@@ -211,5 +211,17 @@ test('pages without a switch or brand logo still apply the theme and favicon', (
     page.ready();
     page.restore();
     assert.equal(page.theme(), 'dark');
-    assert.equal(page.favicon.href, 'assets/logo-mba-dark.png');
+    assert.equal(page.favicon.href, '/assets/logo-mba-dark.png');
+});
+
+test('theme changes and history restoration never overwrite the logo URL selected by the HTML build', () => {
+    const page = createPage();
+    const initialLogo = page.logo.src;
+    page.ready();
+    for (const theme of ['dark', 'light', 'dark']) {
+        page.choose(theme);
+        page.restore();
+        page.systemChange(theme !== 'dark');
+        assert.equal(page.logo.src, initialLogo);
+    }
 });

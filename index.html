@@ -1,8 +1,10 @@
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <script src="js/theme.js"></script>
+    <script src="js/preloader.js"></script>
     <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
@@ -24,57 +26,33 @@
     <meta name="twitter:description" content="Génie Logiciel & Ingénierie des Données. Recherche d'un stage de fin d'études (PFE) de 6 mois en France dès avril 2027.">
     <meta name="twitter:image" content="https://www.benabdellahmosab.com/Img/profile_main.jpg">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/landing-contact.css">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/logo-mba-dark.png">
-
-    <!-- Emergency preloader remover (inline for reliability) -->
-    <script>
-        window.addEventListener('load', function () {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                setTimeout(function () {
-                    preloader.style.opacity = '0';
-                    setTimeout(function () {
-                        preloader.style.display = 'none';
-                    }, 500);
-                }, 100);
-            }
-        });
-    </script>
 </head>
 
 <body class="home-page">
+    <a href="#main" class="skip-link">Aller au contenu</a>
     <!-- PRELOADER -->
-    <div id="preloader">
+    <div id="preloader" aria-hidden="true">
         <div class="loader-content">
             <div class="loader-logo-container">
-                <img src="assets/logo-mba-light.png" alt="Loader Logo" class="loader-logo">
+                <img width="554" height="505" src="assets/logo-mba-light.png" alt="Loader Logo" class="loader-logo">
             </div>
             <div class="loader-ring"></div>
         </div>
     </div>
 
-    <a href="#about" class="skip-link" style="display:none;">Skip to content</a>
-
     <!-- HEADER & NAV -->
     <header>
         <div class="container nav-container">
             <a href="#top" class="brand" aria-label="Retour en haut">
-                <img id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
+                <img width="554" height="505" id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
             </a>
 
             <nav>
@@ -92,7 +70,7 @@
             <div class="header-actions">
                 <div class="theme-switch-wrapper">
                     <label class="theme-switch" for="checkbox">
-                        <input type="checkbox" id="checkbox" />
+                        <input type="checkbox" id="checkbox" aria-label="Activer le thème sombre" />
                         <div class="slider round"></div>
                     </label>
                 </div>
@@ -108,7 +86,7 @@
     </header>
 
     <!-- MOBILE MENU OVERLAY -->
-    <div class="mobile-nav-overlay">
+    <div class="mobile-nav-overlay" inert aria-hidden="true">
         <a href="about.html" class="nav-link">À propos</a>
         <a href="skills.html" class="nav-link">Compétences</a>
         <a href="services.html" class="nav-link">Services</a>
@@ -117,7 +95,7 @@
         <a href="contact.html" class="nav-link">Contact</a>
     </div>
 
-    <main>
+    <main id="main" tabindex="-1">
         <!-- HERO SECTION -->
         <section id="top" class="hero">
             <div class="container hero-container">
@@ -151,7 +129,7 @@
                         </div>
                         <div class="hero-cv-wrapper">
                             <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" target="_blank" class="cv-pill"
-                                aria-label="Consulter mon CV (Mosab BEN ABDELLAH) au format PDF">
+                                aria-label="Consulter mon CV (Mosab BEN ABDELLAH) au format PDF" rel="noopener noreferrer">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -197,8 +175,13 @@
 
                 <div class="hero-visual" data-enter data-enter-delay="160">
                     <div class="hero-img-blob">
-                        <img src="Img/profile_main.jpg" alt="Mosab Ben Abdellah" class="hero-img" width="480"
-                            height="480" loading="eager" decoding="async">
+                        <picture>
+                            <source type="image/webp"
+                                srcset="Img/profile-320.webp 320w, Img/profile-480.webp 480w, Img/profile-768.webp 768w, Img/profile-1000.webp 1000w"
+                                sizes="(min-width: 1500px) 420px, (min-width: 992px) calc(20vw + 120px), (max-width: 347px) calc(100vw - 48px), 300px">
+                            <img src="Img/profile_main.jpg" alt="Mosab Ben Abdellah" class="hero-img" width="480"
+                                height="480" loading="eager" decoding="async" fetchpriority="high">
+                        </picture>
                     </div>
                 </div>
             </div>
@@ -213,19 +196,19 @@
         </div>
     </footer>
 
+    <!-- Font Awesome Free 6.5.1 by @fontawesome (fontawesome.com), icons CC BY 4.0.
+         License and attribution: /assets/icons/FONT-AWESOME-LICENSE.txt -->
     <!-- SCROLL PROGRESS BUTTON -->
-    <div class="progress-wrap" id="progressWrap">
+    <div class="progress-wrap" id="progressWrap" role="button" tabindex="0" aria-label="Revenir en haut de la page">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
-        <i class="fa-solid fa-arrow-up progress-arrow"></i>
+        <svg class="fa-icon fa-solid fa-arrow-up progress-arrow" style="width: 0.75em;" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
     </div>
 
     <!-- JS Scripts -->
     <script src="js/script.js"></script>
     <script defer src="js/entrance.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script defer src="js/background.js"></script>
 </body>
 
 </html>

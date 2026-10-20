@@ -65,6 +65,11 @@
   aspect-ratio: 1;
 }
 
+.home-page .hero-img-blob picture {
+  width: 100%;
+  height: 100%;
+}
+
 .home-page .hero-visual::before {
   content: '';
   position: absolute;
@@ -169,6 +174,11 @@
   transition: border-color 250ms ease, box-shadow 250ms ease;
 }
 
+.contact-page .contact-row > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .contact-page .contact-form::before {
   content: '';
   position: absolute;
@@ -197,6 +207,11 @@
   font-size: 1rem;
   line-height: 1.5;
   transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+/* Keep the same spacing in standards mode, without an inline textarea baseline gap. */
+.contact-page .form-textarea {
+  display: block;
 }
 
 .contact-page :is(.form-input, .form-textarea):focus {

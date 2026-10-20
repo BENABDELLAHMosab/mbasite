@@ -1,8 +1,16 @@
-/* 
-/* 
+/* Inter: SIL Open Font License, see assets/fonts/OFL.txt. */
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin.woff2") format("woff2");
+}
+
+/*
 ========================================================================
    1. VARIABLES & THEME SETUP
-======================================================================== 
+========================================================================
 */
 :root {
   /* Colors - Light Theme (Default) - overridden by JS if preference is dark */
@@ -96,7 +104,7 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
 }
 
-/* 
+/*
    DARK MODE BACKGROUND: Snoweb Style (100% Match)
    Clean Deep Navy + Soft Depth + No Grid + Bottom Wave
 */
@@ -148,7 +156,15 @@
 }
 
 .theme-switch input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.theme-switch input:focus-visible + .slider {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
 }
 
 .slider {
@@ -227,7 +243,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-body);
   color: var(--text-main);
   line-height: 1.6;
@@ -427,7 +443,8 @@ h1 {
   font-weight: 800;
 }
 
-h2 {
+h2,
+h1.page-title {
   font-size: clamp(2rem, 3.5vw, 3.5rem);
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -488,7 +505,7 @@ header {
   transition: transform var(--transition-fast);
 }
 
-/* Match the early theme even before the logo source is synced at DOMContentLoaded. */
+/* One logo image; its colour follows the theme without changing the image URL. */
 [data-theme="light"] .brand-logo {
   filter: brightness(0);
 }
@@ -659,7 +676,7 @@ header {
   /* Force kill the wave to ensure 100% clean background */
 }
 
-/* 
+/*
    PATCH OVERLAY for Credibility Tags (Safe Fix)
    Ensures the background behind tags is 100% Uniform Navy (#020617)
 */
@@ -734,6 +751,7 @@ header {
 }
 
 .hero-title-v2 span {
+  display: block;
   font-size: clamp(1.5rem, 1.5vw + 0.6rem, 2.2rem);
   opacity: 0.9;
 }
@@ -946,7 +964,7 @@ header {
 /* --- SKILLS --- */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 2rem;
 }
 
@@ -1010,7 +1028,7 @@ header {
 /* --- PROJECTS --- */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 2rem;
 }
 
@@ -1173,10 +1191,14 @@ header {
   color: var(--accent);
 }
 
+.timeline {
+  overflow-wrap: anywhere;
+}
+
 /* --- SERVICES --- */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 2rem;
 }
 
@@ -1736,12 +1758,12 @@ footer {
   /* Slight jump effect */
 }
 
-/* 
+/*
    DARK MODE HERO IMAGE OVERRIDE (Snoweb Style)
    Transform "Blob" -> "Isometric Floating 3D Block"
 */
-/* 
-   DARK MODE HERO PHOTO: 
+/*
+   DARK MODE HERO PHOTO:
    Identical to Light Mode (Blob + Animation).
    Only Z-Index is adjusted to sit above background patches.
 */
@@ -1804,7 +1826,7 @@ footer {
 /*
 ========================================================================
    13. CUSTOM LOGO PRELOADER
-======================================================================== 
+========================================================================
 */
 #preloader {
   position: fixed;
@@ -1816,10 +1838,14 @@ footer {
   /* Theme adaptive background */
   z-index: 99999;
   /* Above everything */
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+html[data-preloading] #preloader:not([hidden]) {
+  display: flex;
 }
 
 #preloader.loaded {
@@ -1917,7 +1943,7 @@ footer {
   }
 }
 
-/* 
+/*
    ========================================================================
       SMART PROMPT (UX Toast)
    ========================================================================
@@ -2055,7 +2081,7 @@ body.ux-toast-open .progress-wrap {
 }
 
 
-/* 
+/*
    ========================================================================
       UX IMPROVEMENTS (Recruiter-Proof)
    ========================================================================
@@ -2256,7 +2282,7 @@ a:focus-visible {
 }
 
 
-/* 
+/*
    ========================================================================
       HERO ALIGNMENT & DARK MODE FIXES
    ========================================================================
@@ -2433,4 +2459,27 @@ a:focus-visible {
   border-radius: 4px;
   margin-left: 4px;
   font-weight: 500;
-}
+}
+/* Keyboard access; these additions have no effect on the resting layout. */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-body);
+  color: var(--text-main);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
+  z-index: 100000;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: translateY(0); }
+#main { scroll-margin-top: var(--header-height); }
+.fa-icon {
+  display: inline-block;
+  height: 1em;
+  overflow: visible;
+  fill: currentColor;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
