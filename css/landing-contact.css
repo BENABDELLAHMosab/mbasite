@@ -60,16 +60,9 @@
 }
 
 .home-page .hero-img-blob {
-  /* Animate the transform instead of constantly repainting a changing border. */
-  animation: portrait-float 7s ease-in-out infinite;
   max-width: 100%;
   height: auto;
   aspect-ratio: 1;
-}
-
-@keyframes portrait-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
 }
 
 .home-page .hero-visual::before {
