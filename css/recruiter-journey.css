@@ -304,6 +304,10 @@ body.project-gallery-open {
     order: 3;
   }
 }
+.home-page .hero-qualification {
+  order: 0;
+  margin-bottom: 1.25rem;
+}
 @media (max-width: 767px) {
   /* Compact home layout: two equal actions and a secondary CV link. */
   .home-page #top {
