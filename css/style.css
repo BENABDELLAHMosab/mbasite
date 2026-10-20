@@ -188,17 +188,20 @@
   box-shadow: 0 0 10px rgba(255, 199, 43, 0.6);
 }
 
-/* Checked State (Dark Mode) */
-input:checked+.slider {
+/* Use the early theme so the toggle also renders correctly before DOMContentLoaded. */
+[data-theme="dark"] .theme-switch .slider,
+:root:not([data-theme]) input:checked+.slider {
   background-color: #2c0b47;
   /* Dark Purple */
 }
 
-input:checked+.slider:hover {
+[data-theme="dark"] .theme-switch .slider:hover,
+:root:not([data-theme]) input:checked+.slider:hover {
   box-shadow: 0 0 10px rgba(113, 62, 230, 0.6);
 }
 
-input:checked+.slider:before {
+[data-theme="dark"] .theme-switch .slider:before,
+:root:not([data-theme]) input:checked+.slider:before {
   transform: translateX(26px);
   /* Moon Icon */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c0b47' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'/%3E%3C/svg%3E");
@@ -483,6 +486,15 @@ header {
   display: block;
   object-fit: contain;
   transition: transform var(--transition-fast);
+}
+
+/* Match the early theme even before the logo source is synced at DOMContentLoaded. */
+[data-theme="light"] .brand-logo {
+  filter: brightness(0);
+}
+
+[data-theme="dark"] .brand-logo {
+  filter: brightness(0) invert(1);
 }
 
 .brand:hover .brand-logo {

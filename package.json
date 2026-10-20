@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test": "node --test tests/theme.test.js"
+  },
   "devDependencies": {
     "javascript-obfuscator": "^5.1.0"
   }

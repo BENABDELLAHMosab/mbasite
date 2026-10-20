@@ -32,74 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 2. THEME SWITCHER (Auto-Detect + Manual Override)
-    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-    const systemSource = window.matchMedia('(prefers-color-scheme: dark)');
-
-    function calculateSettingAsThemeString({ localStorageTheme, systemDarkMode }) {
-        if (localStorageTheme !== null) {
-            return localStorageTheme;
-        }
-        if (systemDarkMode) {
-            return 'dark';
-        }
-        return 'light';
-    }
-
-    function updateThemeOnHtml({ theme }) {
-        document.documentElement.setAttribute('data-theme', theme);
-        if (toggleSwitch) {
-            toggleSwitch.checked = (theme === 'dark');
-        }
-
-        // Update Favicon & Brand Logo
-        const favicon = document.querySelector('link[rel="icon"]');
-        const brandLogo = document.getElementById('brandLogo');
-
-        if (theme === 'light') {
-            // Light Mode -> Usage of Dark (Black) Logo
-            // User specified: "mode claire ... logo soit noire (logo-mba-light.png)"
-            if (favicon) favicon.href = 'assets/logo-mba-light.png';
-            if (brandLogo) brandLogo.src = 'assets/logo-mba-light.png';
-        } else {
-            // Dark Mode -> Usage of Light (White) Logo
-            // User specified: "mode sombe ... logo soit claire (logo-mba-dark.png)"
-            if (favicon) favicon.href = 'assets/logo-mba-dark.png';
-            if (brandLogo) brandLogo.src = 'assets/logo-mba-dark.png';
-        }
-    }
-
-    // 1. Initial Load: Auto-Detect (No localStorage persistence preferred for "refresh = auto")
-    // User requested: "si l user rafrichissait la page le mode auto s active"
-    // So we primarily rely on systemSource on load.
-
-    // Check system preference immediately
-    let currentTheme = systemSource.matches ? 'dark' : 'light';
-    updateThemeOnHtml({ theme: currentTheme });
-
-    // 2. Manual Toggle
-    function switchTheme(e) {
-        if (e.target.checked) {
-            updateThemeOnHtml({ theme: 'dark' });
-        } else {
-            updateThemeOnHtml({ theme: 'light' });
-        }
-    }
-
-    // 3. System Change Listener (Live Update)
-    systemSource.addEventListener('change', (e) => {
-        // Only update if user hasn't manually overridden? 
-        // User said: "si user a le mode sombre donc site sombre... si user changer le site doit changer immediatement"
-        // But also "refresh = auto". 
-        // We will update to match system if the user hasn't explicitly set a preference *in this session*?
-        // Simpler: Just update to match system change, as it's "Auto Mode".
-        const newTheme = e.matches ? 'dark' : 'light';
-        updateThemeOnHtml({ theme: newTheme });
-    });
-
-    if (toggleSwitch) {
-        toggleSwitch.addEventListener('change', switchTheme);
-    }
+    // Theme initialization and persistence are handled by js/theme.js in <head>.
 
     // 3. MOBILE MENU
     const burger = document.querySelector('.burger-menu');
@@ -336,8 +269,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // This optional prompt needs storage to respect its cooldown.
+            let dismissedAt;
+            let alreadyShown;
+            try {
+                dismissedAt = localStorage.getItem(`uxTourDismissed:${this.routeKey}`);
+                alreadyShown = sessionStorage.getItem(`uxTourShown:${this.routeKey}`);
+            } catch {
+                return;
+            }
+
             // Check Cooldown (24h)
-            const dismissedAt = localStorage.getItem(`uxTourDismissed:${this.routeKey}`);
             if (dismissedAt) {
                 const elapsed = Date.now() - parseInt(dismissedAt, 10);
                 if (elapsed < 24 * 60 * 60 * 1000) {
@@ -347,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Check Session Shown
-            if (sessionStorage.getItem(`uxTourShown:${this.routeKey}`)) {
+            if (alreadyShown) {
                 console.log('[SmartPrompt] Already shown in this session.');
                 return;
             }
