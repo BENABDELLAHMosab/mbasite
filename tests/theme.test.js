@@ -77,8 +77,8 @@ function createPage({ dark = false, storage = createStorage(), hasSwitch = true 
     };
 }
 
-test('all eight pages load the theme synchronously before every stylesheet', () => {
-    for (const name of ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', '404']) {
+test('all portfolio pages, including project details, load the theme before every stylesheet', () => {
+    for (const name of ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', 'project-tmpa', 'project-etl', 'project-triz', '404']) {
         const html = readFileSync(join(root, `${name}.html`), 'utf8');
         const themeScript = /<script src="\/?js\/theme\.js"><\/script>/;
         assert.equal(html.split(themeScript).length - 1, 1, name);

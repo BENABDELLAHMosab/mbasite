@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="js/theme.js"></script>
+    <script src="js/preloader.js"></script>
+    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Construire une chaîne décisionnelle complète : importer les données, les fiabiliser, alimenter un entrepôt PostgreSQL et les restituer dans Power BI.">
+    <title>Data Warehouse &amp; ETL Pipeline | Mosab BEN ABDELLAH</title>
+    <link rel="canonical" href="https://www.benabdellahmosab.com/project-etl.html">
+
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-mba-dark.png">
+    <link rel="stylesheet" href="css/recruiter-journey.css">
+    <link rel="stylesheet" href="css/ux-interactions.css">
+</head>
+
+<body class="case-page" data-nav-page="projects.html" data-project-id="project-etl">
+    <a href="#main" class="skip-link">Aller au contenu</a>
+    <!-- PRELOADER -->
+    <div id="preloader" aria-hidden="true">
+        <div class="loader-content">
+            <div class="loader-logo-container">
+                <img width="554" height="505" src="assets/logo-mba-light.png" alt="Loader Logo" class="loader-logo">
+            </div>
+            <div class="loader-ring"></div>
+        </div>
+    </div>
+
+    <!-- HEADER & NAV -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="brand" aria-label="Retour à l'accueil">
+                <img width="554" height="505" id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
+            </a>
+
+            <nav aria-label="Navigation principale">
+                <ul class="nav-links">
+                    <li><a href="about.html" class="nav-link">À propos</a></li>
+                    <li><a href="skills.html" class="nav-link">Compétences</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="projects.html" class="nav-link active" aria-current="location">Projets</a></li>
+                    <li><a href="experience.html" class="nav-link">Expérience</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                    <span class="nav-indicator" aria-hidden="true"></span>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" class="header-cv" target="_blank" rel="noopener noreferrer" aria-label="Consulter mon CV PDF dans un nouvel onglet">CV <span>PDF</span></a>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" aria-label="Activer le thème sombre" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Mobile Burger -->
+            <button class="burger-menu" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-navigation">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="mobile-navigation" class="mobile-nav-overlay" role="navigation" aria-label="Navigation mobile" inert aria-hidden="true">
+        <a href="about.html" class="nav-link">À propos</a>
+        <a href="skills.html" class="nav-link">Compétences</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="projects.html" class="nav-link active" aria-current="location">Projets</a>
+        <a href="experience.html" class="nav-link">Expérience</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" class="nav-link mobile-cv-link" target="_blank" rel="noopener noreferrer">Consulter mon CV <span>PDF · nouvel onglet</span></a>
+    </div>
+
+    <main id="main" tabindex="-1" class="case-main">
+        <article class="container case-container">
+            <nav class="case-breadcrumb" aria-label="Fil d’Ariane"><a class="project-return" data-project-return href="projects.html#project-etl"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Retour aux projets</span></a></nav>
+            <span class="case-eyebrow">Projet académique · Data Engineering &amp; Business Intelligence</span>
+            <h1 class="case-title">Data Warehouse &amp; ETL Pipeline</h1>
+            <p class="case-lead">Construire une chaîne décisionnelle complète : importer les données, les fiabiliser, alimenter un entrepôt PostgreSQL et les restituer dans Power BI.</p>
+            <div class="case-meta" aria-label="Technologies et repères"><span>PostgreSQL</span><span>Pentaho Data Integration</span><span>Power BI / DAX</span><span>CSV / Excel</span></div>
+            <div class="project-carousel" data-project-carousel role="region" aria-roledescription="carrousel" aria-label="Captures du projet" tabindex="0">
+                <button type="button" class="gallery-control carousel-prev" data-slide-prev aria-label="Capture précédente" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+                <div class="carousel-slides"><figure class="project-shot" data-carousel-slide>
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dashboard-overview.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Vue d’ensemble Power BI : indicateurs agrégés, graphiques et filtres du jeu de données d’étude.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dashboard-overview-640.webp" srcset="assets/projects/evidence/etl-dashboard-overview-640.webp 640w, assets/projects/evidence/etl-dashboard-overview.webp 1150w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1150" height="655" alt="Vue d’ensemble Power BI : indicateurs agrégés, graphiques et filtres du jeu de données d’étude." loading="eager" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Vue d’ensemble Power BI : indicateurs agrégés, graphiques et filtres du jeu de données d’étude.</span></figcaption>
+                </figure>
+<figure class="project-shot" data-carousel-slide>
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dashboard-platforms.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Analyse par plateforme : comparaison des indicateurs et filtres interactifs Power BI.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dashboard-platforms-640.webp" srcset="assets/projects/evidence/etl-dashboard-platforms-640.webp 640w, assets/projects/evidence/etl-dashboard-platforms.webp 1150w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1150" height="660" alt="Analyse par plateforme : comparaison des indicateurs et filtres interactifs Power BI." loading="lazy" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Analyse par plateforme : comparaison des indicateurs et filtres interactifs Power BI.</span></figcaption>
+                </figure>
+<figure class="project-shot" data-carousel-slide>
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dashboard-social.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Exploration par genre et niveau d’interaction sociale, avec filtres de plateforme et de contenu.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dashboard-social-640.webp" srcset="assets/projects/evidence/etl-dashboard-social-640.webp 640w, assets/projects/evidence/etl-dashboard-social.webp 1147w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1147" height="658" alt="Exploration par genre et niveau d’interaction sociale, avec filtres de plateforme et de contenu." loading="lazy" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Exploration par genre et niveau d’interaction sociale, avec filtres de plateforme et de contenu.</span></figcaption>
+                </figure>
+<figure class="project-shot" data-carousel-slide>
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dashboard-time.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Analyse par tranche d’âge et évolution des indicateurs par mois et par trimestre.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dashboard-time-640.webp" srcset="assets/projects/evidence/etl-dashboard-time-640.webp 640w, assets/projects/evidence/etl-dashboard-time.webp 1144w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1144" height="655" alt="Analyse par tranche d’âge et évolution des indicateurs par mois et par trimestre." loading="lazy" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Analyse par tranche d’âge et évolution des indicateurs par mois et par trimestre.</span></figcaption>
+                </figure>
+<figure class="project-shot" data-carousel-slide>
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dashboard-sleep.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Vue sommeil et usages numériques : indicateurs, répartition par âge et tableau de synthèse.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dashboard-sleep-640.webp" srcset="assets/projects/evidence/etl-dashboard-sleep-640.webp 640w, assets/projects/evidence/etl-dashboard-sleep.webp 1150w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1150" height="654" alt="Vue sommeil et usages numériques : indicateurs, répartition par âge et tableau de synthèse." loading="lazy" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Vue sommeil et usages numériques : indicateurs, répartition par âge et tableau de synthèse.</span></figcaption>
+                </figure>
+<figure class="project-shot" data-carousel-slide>
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dimension-lookups.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Pipeline Pentaho : recherche des clés de dimensions, chargement de la table de faits et traitement des rejets.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dimension-lookups-640.webp" srcset="assets/projects/evidence/etl-dimension-lookups-640.webp 640w, assets/projects/evidence/etl-dimension-lookups.webp 1902w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1902" height="1119" alt="Pipeline Pentaho : recherche des clés de dimensions, chargement de la table de faits et traitement des rejets." loading="lazy" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Pipeline Pentaho : recherche des clés de dimensions, chargement de la table de faits et traitement des rejets.</span></figcaption>
+                </figure></div>
+                <button type="button" class="gallery-control carousel-next" data-slide-next aria-label="Capture suivante" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+                <p class="carousel-count" data-carousel-count aria-hidden="true" hidden></p>
+                <p class="sr-only" data-carousel-status role="status" aria-live="polite" aria-atomic="true"></p>
+            </div>
+            <div class="case-summary">
+                <div><h2>Le besoin</h2><p>Des fichiers CSV et Excel doivent être transformés en données cohérentes et en indicateurs lisibles pour explorer un jeu de données sur les usages numériques.</p></div>
+                <div><h2>Ma contribution</h2><p>Conception et réalisation de la chaîne BI : staging, modèle en étoile, transformations Pentaho, contrôles SQL et restitution Power BI.</p></div>
+                <div><h2>Le résultat</h2><p>1 200 observations chargées dans la table de faits et cinq pages Power BI. Les chargements sont vérifiés par des requêtes SQL.</p></div>
+            </div>
+            <section class="case-section" aria-labelledby="case-work"><h2 id="case-work">La réalisation en pratique</h2><ul><li>Séparer l’import dans le staging de la préparation des données et de l’alimentation du modèle dimensionnel.</li>
+<li>Nettoyer, dédoublonner et mapper les données ; rechercher les clés de dimensions et tracer les lignes rejetées.</li>
+<li>Construire les indicateurs et les filtres Power BI, puis contrôler les volumes et la cohérence avec SQL.</li></ul></section>
+            <section class="case-section" aria-labelledby="case-evidence">
+                <h2 id="case-evidence">La qualité des données avant la restitution</h2>
+                <div class="case-gallery"><figure class="project-shot">
+                    <a class="shot-link" data-gallery-link href="assets/projects/evidence/etl-dimension-lookups.webp" target="_blank" rel="noopener noreferrer" aria-label="Agrandir : Transformation Pentaho : recherche des clés de dimensions, chargement des faits et branche de rejet.">
+                        <span class="shot-expand" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm4.5 10.5L21 21M10 7v6M7 10h6"/></svg><span>Cliquer pour agrandir</span></span>
+                        <span class="shot-frame"><img src="assets/projects/evidence/etl-dimension-lookups-640.webp" srcset="assets/projects/evidence/etl-dimension-lookups-640.webp 640w, assets/projects/evidence/etl-dimension-lookups.webp 1902w" sizes="(min-width: 1100px) 960px, calc(100vw - 48px)" width="1902" height="1119" alt="Transformation Pentaho : recherche des clés de dimensions, chargement des faits et branche de rejet." loading="lazy" decoding="async"></span>
+                    </a>
+                    <figcaption><span data-gallery-caption>Transformation Pentaho : recherche des clés de dimensions, chargement des faits et branche de rejet.</span></figcaption>
+                </figure><div class="case-evidence-copy"><p>Le pipeline recherche les dimensions nécessaires avant de charger la table de faits. Les lignes ne remplissant pas les conditions suivent une branche de rejet, afin de pouvoir expliquer le résultat du chargement.</p></div></div>
+            </section>
+            <p class="case-source-note">Captures extraites de mon rapport de Business Intelligence. Les indicateurs illustrent la chaîne technique et l’exploration du jeu de données d’étude.</p>
+            <a class="proof-link" href="https://github.com/BENABDELLAHMosab/Data-Warehouse-ETL-Pipeline" target="_blank" rel="noopener noreferrer">Consulter le code sur GitHub <span class="sr-only">(nouvel onglet)</span></a>
+        </article>
+
+    </main>
+    <dialog id="project-image-dialog" class="case-image-dialog" aria-labelledby="project-image-caption">
+        <div class="dialog-toolbar">
+            <p id="project-image-caption" aria-live="polite"></p>
+            <span id="project-image-count" class="dialog-count" aria-hidden="true"></span>
+            <button type="button" class="gallery-control dialog-close" data-gallery-close aria-label="Fermer l’aperçu" title="Fermer (Échap)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+        </div>
+        <div class="dialog-stage">
+            <button type="button" class="gallery-control dialog-prev" data-gallery-prev aria-label="Image précédente" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+            <img id="project-image-full" src="assets/projects/evidence/etl-dashboard-overview.webp" alt="" loading="lazy">
+            <button type="button" class="gallery-control dialog-next" data-gallery-next aria-label="Image suivante" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+        </div>
+    </dialog>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; <span id="currentYear"></span> Mosab Ben Abdellah. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Font Awesome Free 6.5.1 by @fontawesome (fontawesome.com), icons CC BY 4.0.
+         License and attribution: /assets/icons/FONT-AWESOME-LICENSE.txt -->
+    <!-- SCROLL PROGRESS BUTTON -->
+    <div class="progress-wrap" id="progressWrap" role="button" tabindex="0" aria-label="Revenir en haut de la page">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+        <svg class="fa-icon fa-solid fa-arrow-up progress-arrow" style="width: 0.75em;" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
+    </div>
+
+    <!-- JS Script -->
+    <script src="js/script.js"></script>
+    <script defer src="js/project-gallery.js"></script>
+</body>
+
+</html>

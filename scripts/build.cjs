@@ -1,9 +1,9 @@
-// Dependency-free static build. Only resources reachable from the eight pages are published.
+// Dependency-free static build. Only resources reachable from the portfolio pages are published.
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 
-const pages = ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', '404'];
+const pages = ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', 'project-tmpa', 'project-etl', 'project-triz', '404'];
 const origin = 'https://www.benabdellahmosab.com';
 const assetPattern = /^(?:assets|css|js|Img|document)\//;
 
@@ -100,11 +100,11 @@ function build(root = path.resolve(__dirname, '..')) {
         write(file, fs.readFileSync(path.join(root, file)));
     }
     write('asset-manifest.json', JSON.stringify(manifest, null, 2) + '\n');
-    return { output, manifest };
+    return { output, manifest, pageCount: pages.length };
 }
 
 if (require.main === module) {
-    const { manifest } = build();
-    console.log(`Built 8 pages and ${Object.keys(manifest).length} versioned resources in dist/.`);
+    const { manifest, pageCount } = build();
+    console.log(`Built ${pageCount} pages and ${Object.keys(manifest).length} versioned resources in dist/.`);
 }
 module.exports = { build };

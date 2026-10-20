@@ -16,17 +16,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (burger && mobileNav) {
         const desktop = window.matchMedia('(min-width: 992px)');
+        let scrollLock = null;
+        const unlockScroll = () => {
+            if (!scrollLock) return;
+            const { x, y, top, left, scrollBehavior, priority } = scrollLock;
+            scrollLock = null;
+            document.body.classList.remove('mobile-menu-open');
+            document.documentElement.classList.remove('mobile-menu-open');
+            if (top) document.body.style.setProperty('--mobile-menu-top', top);
+            else document.body.style.removeProperty('--mobile-menu-top');
+            if (left) document.body.style.setProperty('--mobile-menu-left', left);
+            else document.body.style.removeProperty('--mobile-menu-left');
+            // CSS smooth scrolling must not animate restoration from the fixed body.
+            document.documentElement.style.setProperty('scroll-behavior', 'auto', 'important');
+            window.scrollTo({ left: x, top: y, behavior: 'instant' });
+            if (scrollBehavior) document.documentElement.style.setProperty('scroll-behavior', scrollBehavior, priority);
+            else document.documentElement.style.removeProperty('scroll-behavior');
+        };
         const setOpen = (open, restoreFocus = false) => {
+            if (open && desktop.matches) return;
+            if (open && !scrollLock) {
+                scrollLock = {
+                    x: window.scrollX, y: window.scrollY,
+                    top: document.body.style.getPropertyValue('--mobile-menu-top'),
+                    left: document.body.style.getPropertyValue('--mobile-menu-left'),
+                    scrollBehavior: document.documentElement.style.getPropertyValue('scroll-behavior'),
+                    priority: document.documentElement.style.getPropertyPriority('scroll-behavior')
+                };
+                document.body.style.setProperty('--mobile-menu-top', `${-scrollLock.y}px`);
+                document.body.style.setProperty('--mobile-menu-left', `${-scrollLock.x}px`);
+                document.body.classList.add('mobile-menu-open');
+                document.documentElement.classList.add('mobile-menu-open');
+            }
             burger.setAttribute('aria-expanded', String(open));
+            burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
             burger.classList.toggle('active', open);
             mobileNav.classList.toggle('active', open);
             mobileNav.inert = !open;
             mobileNav.setAttribute('aria-hidden', String(!open));
+            if (!open) unlockScroll();
             if (open) navLinks[0]?.focus({ preventScroll: true });
             else if (restoreFocus) burger.focus({ preventScroll: true });
         };
+        burger.setAttribute('aria-label', 'Ouvrir le menu');
         burger.addEventListener('click', () => setOpen(burger.getAttribute('aria-expanded') !== 'true'));
-        navLinks.forEach(link => link.addEventListener('click', () => setOpen(false)));
+        navLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                // The current page remains open for the CV or a modified click.
+                // Restore keyboard focus when the menu link becomes inert.
+                const opensElsewhere = link.getAttribute('target')?.toLowerCase() === '_blank' ||
+                    event.ctrlKey || event.metaKey || event.shiftKey;
+                setOpen(false, Boolean(opensElsewhere));
+            });
+            link.addEventListener('auxclick', event => {
+                if (event.button === 1) setOpen(false, true);
+            });
+        });
         document.addEventListener('keydown', event => {
             if (burger.getAttribute('aria-expanded') !== 'true') return;
             if (event.key === 'Escape') {
@@ -39,6 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         desktop.addEventListener('change', () => { if (desktop.matches) setOpen(false); });
+        window.addEventListener('pagehide', () => setOpen(false));
+        window.addEventListener('pageshow', () => setOpen(false));
     }
 
     // Images use one guarded fallback, including an error that occurred before this script loaded.
@@ -55,12 +102,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. NAVIGATION ACTIVE STATE (Multi-page Highlight)
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const navigationPage = document.body.dataset?.navPage || currentPath;
     const navItems = document.querySelectorAll('.nav-link');
 
     navItems.forEach(link => {
         const linkPath = link.getAttribute('href');
-        if (linkPath === currentPath) {
+        if (linkPath === navigationPage) {
             link.classList.add('active');
+            link.setAttribute('aria-current', linkPath === currentPath ? 'page' : 'location');
+        } else {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
         }
     });
 
@@ -184,235 +236,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
 
-    /*
-    ========================================================================
-       8. SMART PROMPT (UX TOAST)
-    ========================================================================
-    */
-    class SmartPrompt {
-        constructor() {
-            this.timer = null;
-            this.isShown = false; // Explicit init
-            this.dismissed = false;
-            this.dismissKey = 'portfolio-tour-dismissed';
-            this.prompt = null;
-            this.idleTime = 10000; // 10s
-            this.currentPath = window.location.pathname.split('/').pop() || 'index.html';
-            if (this.currentPath === '') this.currentPath = 'index.html';
-
-            // Normalize path for clean keys
-            this.routeKey = this.currentPath.replace('.html', '');
-            if (this.routeKey === 'index') this.routeKey = 'home';
-
-            // Route Mapping
-            this.routes = {
-                'home': {
-                    nextUrl: 'about.html',
-                    title: 'Découvrir le profil',
-                    text: 'Souhaitez-vous consulter la section À propos ?',
-                    cta: 'Aller à À propos'
-                },
-                'index': { // Alternate for home
-                    nextUrl: 'about.html',
-                    title: 'Découvrir le profil',
-                    text: 'Souhaitez-vous consulter la section À propos ?',
-                    cta: 'Aller à À propos'
-                },
-                'about': {
-                    nextUrl: 'skills.html',
-                    title: 'Aller plus loin',
-                    text: 'Souhaitez-vous voir mes compétences ?',
-                    cta: 'Voir Compétences'
-                },
-                'skills': {
-                    nextUrl: 'services.html',
-                    title: 'Continuer la visite',
-                    text: 'Souhaitez-vous découvrir mes services ?',
-                    cta: 'Voir Services'
-                },
-                'services': {
-                    nextUrl: 'projects.html',
-                    title: 'Explorer les réalisations',
-                    text: 'Souhaitez-vous consulter mes projets ?',
-                    cta: 'Voir Projets'
-                },
-                'projects': {
-                    nextUrl: 'experience.html',
-                    title: 'Parcours',
-                    text: 'Souhaitez-vous voir mon expérience ?',
-                    cta: 'Voir Expérience'
-                },
-                'experience': {
-                    nextUrl: 'contact.html',
-                    title: 'Prendre contact',
-                    text: 'Souhaitez-vous accéder à la section Contact ?',
-                    cta: 'Voir Contact'
-                },
-                'contact': {
-                    nextUrl: 'index.html',
-                    title: 'Merci de votre visite',
-                    text: 'Souhaitez-vous revenir à l’accueil ?',
-                    cta: 'Retour Accueil'
-                }
-            };
-        }
-
-        init() {
-            const pageData = this.routes[this.routeKey];
-            if (!pageData || this.isDismissed()) {
-                return;
-            }
-
-            // If the browser cannot remember a dismissal, omit this optional UI.
-            try {
-                if (sessionStorage.getItem(`uxTourShown:${this.routeKey}`)) return;
-                const probeKey = 'portfolio-tour-storage-check';
-                localStorage.setItem(probeKey, '1');
-                localStorage.removeItem(probeKey);
-            } catch {
-                return;
-            }
-
-            const syncDismissal = () => {
-                if (this.isDismissed()) this.hidePrompt();
-            };
-            window.addEventListener('storage', event => {
-                if (event.key !== null && event.key !== this.dismissKey && !event.key.startsWith('uxTourDismissed:')) return;
-                try { if (event.storageArea !== localStorage) return; } catch { return; }
-                syncDismissal();
-            });
-            window.addEventListener('pageshow', syncDismissal);
-
-            this.startTimer();
-        }
-
-        isDismissed() {
-            if (this.dismissed) return true;
-            try {
-                this.dismissed = localStorage.getItem(this.dismissKey) === 'true' ||
-                    sessionStorage.getItem(this.dismissKey) === 'true';
-                // Honor previous dismissals on any page, including the former 24h keys.
-                if (!this.dismissed && Object.keys(this.routes).some(route => {
-                    const saved = Number(localStorage.getItem(`uxTourDismissed:${route}`));
-                    return Number.isFinite(saved) && saved > 0;
-                })) this.rememberDismissal();
-            } catch {
-                this.dismissed = true;
-            }
-            return this.dismissed;
-        }
-
-        rememberDismissal() {
-            this.dismissed = true;
-            try {
-                localStorage.setItem(this.dismissKey, 'true');
-            } catch {
-                // A full local store must not prevent closing or navigating this session.
-                try { sessionStorage.setItem(this.dismissKey, 'true'); } catch { /* Keep the in-memory choice. */ }
-            }
-        }
-
-        hidePrompt() {
-            clearTimeout(this.timer);
-            this.timer = null;
-            const prompt = this.prompt;
-            this.prompt = null;
-            if (!prompt) return;
-            prompt.classList.add('hide');
-            prompt.classList.remove('visible');
-            prompt.style.opacity = '0';
-            document.body.classList.remove('ux-toast-open');
-            document.body.style.removeProperty('--ux-toast-height');
-            setTimeout(() => prompt.remove(), 400);
-        }
-
-        startTimer() {
-            if (this.isShown || this.isDismissed()) return;
-
-            // no activity listeners, just one timeout
-            this.timer = setTimeout(() => {
-                this.show();
-            }, this.idleTime);
-        }
-
-        show() {
-            // Recheck after the delay: another page/tab may have dismissed the tour.
-            if (this.isShown || this.isDismissed()) return;
-            this.isShown = true;
-
-            const data = this.routes[this.routeKey];
-            const html = `
-                <div class="smart-prompt" role="dialog" aria-labelledby="promptTitle" style="display:block !important; opacity:0;">
-                    <button class="smart-close" aria-label="Fermer">
-                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                    <div class="smart-content">
-                        <h4 id="promptTitle">${data.title}</h4>
-                        <p>${data.text}</p>
-                    </div>
-                    <div class="smart-actions">
-                        <button class="btn-prompt-secondary">Plus tard</button>
-                        <button class="btn-prompt-primary">${data.cta}</button>
-                    </div>
-                </div>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', html);
-
-            // Bind Events & Animate
-            const prompt = document.querySelector('.smart-prompt');
-            this.prompt = prompt;
-            const btnClose = prompt.querySelector('.smart-close');
-            const btnSecondary = prompt.querySelector('.btn-prompt-secondary');
-            const btnPrimary = prompt.querySelector('.btn-prompt-primary');
-
-            const removeOpenClass = () => {
-                document.body.classList.remove('ux-toast-open');
-                document.body.style.removeProperty('--ux-toast-height');
-            };
-
-            const dismiss = () => {
-                this.rememberDismissal();
-                this.hidePrompt();
-            };
-
-            const navigate = () => {
-                removeOpenClass(); // Reset UI overlap logic
-                try { sessionStorage.setItem(`uxTourShown:${this.routeKey}`, 'true'); } catch { /* Navigation still works. */ }
-                window.location.href = data.nextUrl;
-            };
-
-            btnClose.addEventListener('click', dismiss);
-            btnSecondary.addEventListener('click', dismiss);
-            btnPrimary.addEventListener('click', navigate);
-
-            // Animate In (Force Layout Reflow)
-            requestAnimationFrame(() => {
-                if (this.prompt !== prompt || this.isDismissed()) {
-                    this.hidePrompt();
-                    return;
-                }
-                prompt.offsetHeight; // force reflow
-                prompt.style.opacity = '1'; // Force override inline
-                prompt.classList.add('visible');
-
-                // UX Overlap Fix: Measure height for ScrollTop button
-                const height = prompt.getBoundingClientRect().height;
-                document.body.style.setProperty('--ux-toast-height', `${height}px`);
-                document.body.classList.add('ux-toast-open');
-            });
-        }
-    }
-
-    // Init Smart Prompt (Robust check)
-    const initPrompt = () => {
-        const smartPrompt = new SmartPrompt();
-        smartPrompt.init();
-    };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPrompt);
-    } else {
-        initPrompt();
-    }
+    // Contextual links let visitors continue at their own pace, without timed prompts.
 });

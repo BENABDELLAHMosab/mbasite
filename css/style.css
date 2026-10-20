@@ -625,14 +625,36 @@ header {
   right: -100%;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
+  padding: calc(var(--header-height) + 1rem) 1.5rem max(1.5rem, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   background-color: var(--bg-body);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
   gap: 2rem;
   transition: right 0.4s ease;
   z-index: 999;
+}
+
+html.mobile-menu-open {
+  overflow: hidden;
+}
+
+body.mobile-menu-open {
+  position: fixed;
+  top: var(--mobile-menu-top, 0px);
+  left: var(--mobile-menu-left, 0px);
+  width: 100%;
+  overflow: hidden;
+}
+
+body.mobile-menu-open .progress-wrap {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .mobile-nav-overlay.active {
@@ -976,12 +998,6 @@ header {
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.skill-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary);
-}
-
 .skill-icon-img {
   width: 56px;
   height: 56px;
@@ -1054,11 +1070,6 @@ header {
   flex-direction: column;
 }
 
-.project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
-}
-
 .project-cover {
   width: 100%;
   overflow: hidden;
@@ -1077,11 +1088,6 @@ header {
   /* More spacing to reduce upscaling blur and look pro */
   background-color: white;
   transition: transform var(--transition-fast);
-}
-
-.project-card:hover .project-cover-img {
-  transform: scale(1.05);
-  /* Subtle zoom on hover */
 }
 
 @media (max-width: 768px) {
@@ -1209,11 +1215,6 @@ header {
   border: 1px solid var(--border-light);
   text-align: center;
   transition: transform var(--transition-fast);
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--accent);
 }
 
 .service-icon {
@@ -1615,41 +1616,48 @@ footer {
 .service-card {
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
     box-shadow 0.5s ease,
-    border-color 0.5s ease,
-    filter 0.5s ease;
+    border-color 0.5s ease;
   /* Ensure positioned for z-index manipulation if needed */
   position: relative;
   z-index: 1;
 }
 
-.skill-card:hover,
-.project-card:hover,
-.service-card:hover {
+:is(.skill-card, .project-card, .service-card):has(:focus-visible) {
   transform: translateY(-10px) scale(1.03);
   z-index: 10;
-  /* Premium Glow */
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25),
     0 0 20px var(--primary-light);
   border-color: var(--primary);
 }
 
-/* SIBLING SHIFT EFFECT (The "Look Right" push) */
-.skill-card:hover~.skill-card,
-.project-card:hover~.project-card,
-.service-card:hover~.service-card {
-  transform: translateX(15px);
-  /* Push siblings slightly right */
-  filter: brightness(0.9);
-  /* Focus effect: dim interactions */
+:is(.skill-card, .project-card, .service-card):active {
+  border-color: var(--primary);
 }
 
 /* Dark Mode Intensity & Adjustments */
-[data-theme="dark"] .skill-card:hover,
-[data-theme="dark"] .project-card:hover,
-[data-theme="dark"] .service-card:hover {
+[data-theme="dark"] :is(.skill-card, .project-card, .service-card):has(:focus-visible) {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
     0 0 25px rgba(34, 211, 238, 0.5);
   border-color: #22d3ee;
+}
+
+/* Only the hovered card moves; neighbouring reading targets remain stable. */
+@media (hover: hover) and (pointer: fine) {
+  :is(.skill-card, .project-card, .service-card):hover {
+    transform: translateY(-10px) scale(1.03);
+    z-index: 10;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 20px var(--primary-light);
+    border-color: var(--primary);
+  }
+
+  [data-theme="dark"] :is(.skill-card, .project-card, .service-card):hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(34, 211, 238, 0.5);
+    border-color: #22d3ee;
+  }
+
+  .project-card:hover .project-cover-img {
+    transform: scale(1.05);
+  }
 }
 
 /*
@@ -2166,8 +2174,19 @@ a:focus-visible {
 
   .smart-prompt {
     transition: none !important;
-    opacity: 1 !important;
     transform: none !important;
+  }
+
+  :is(.skill-card, .project-card, .service-card),
+  .project-cover-img {
+    transform: none !important;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 768px) {
+  .smart-prompt {
+    transform: translateX(-50%) !important;
   }
 }
 

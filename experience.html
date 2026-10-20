@@ -19,6 +19,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/logo-mba-dark.png">
+    <link rel="stylesheet" href="css/recruiter-journey.css">
 </head>
 
 <body class="journey-page">
@@ -40,19 +41,20 @@
                 <img width="554" height="505" id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
             </a>
 
-            <nav>
+            <nav aria-label="Navigation principale">
                 <ul class="nav-links">
                     <li><a href="about.html" class="nav-link">À propos</a></li>
                     <li><a href="skills.html" class="nav-link">Compétences</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
                     <li><a href="projects.html" class="nav-link">Projets</a></li>
-                    <li><a href="experience.html" class="nav-link active">Expérience</a></li>
+                    <li><a href="experience.html" class="nav-link active" aria-current="page">Expérience</a></li>
                     <li><a href="contact.html" class="nav-link">Contact</a></li>
                     <span class="nav-indicator" aria-hidden="true"></span>
                 </ul>
             </nav>
 
             <div class="header-actions">
+                <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" class="header-cv" target="_blank" rel="noopener noreferrer" aria-label="Consulter mon CV PDF dans un nouvel onglet">CV <span>PDF</span></a>
                 <div class="theme-switch-wrapper">
                     <label class="theme-switch" for="checkbox">
                         <input type="checkbox" id="checkbox" aria-label="Activer le thème sombre" />
@@ -62,7 +64,7 @@
             </div>
 
             <!-- Mobile Burger -->
-            <button class="burger-menu" aria-label="Open Menu" aria-expanded="false">
+            <button class="burger-menu" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-navigation">
                 <span class="burger-line"></span>
                 <span class="burger-line"></span>
                 <span class="burger-line"></span>
@@ -71,13 +73,14 @@
     </header>
 
     <!-- MOBILE MENU OVERLAY -->
-    <div class="mobile-nav-overlay" inert aria-hidden="true">
+    <div id="mobile-navigation" class="mobile-nav-overlay" role="navigation" aria-label="Navigation mobile" inert aria-hidden="true">
         <a href="about.html" class="nav-link">À propos</a>
         <a href="skills.html" class="nav-link">Compétences</a>
         <a href="services.html" class="nav-link">Services</a>
         <a href="projects.html" class="nav-link">Projets</a>
-        <a href="experience.html" class="nav-link active">Expérience</a>
+        <a href="experience.html" class="nav-link active" aria-current="page">Expérience</a>
         <a href="contact.html" class="nav-link">Contact</a>
+        <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" class="nav-link mobile-cv-link" target="_blank" rel="noopener noreferrer">Consulter mon CV <span>PDF · nouvel onglet</span></a>
     </div>
 
     <main id="main" tabindex="-1">
@@ -98,6 +101,8 @@
                             <li><strong>Stack technique :</strong> React, TypeScript, Node.js, Express.js, MongoDB (Replica Set, transactions), Docker.</li>
                             <li><strong>Apports :</strong> Modélisation de workflows métiers, gestion de la cohérence transactionnelle, architecture Full-Stack et conteneurisation.</li>
                         </ul>
+
+                        <a class="proof-link" href="project-tmpa.html">Découvrir le Builder en images</a>
                     </div>
                     <!-- Exp 2 -->
                     <div class="timeline-item">
@@ -109,6 +114,8 @@
                             <li><strong>Réalisations :</strong> Modélisation des processus métier, structuration et conception d'une base de données relationnelle, développement Backend robuste et digitalisation de processus industriels complexes.</li>
                             <li><strong>Stack technique :</strong> Node.js, Express.js, PostgreSQL, SQL.</li>
                         </ul>
+
+                        <a class="proof-link" href="projects.html#project-mdgs">Voir le projet Migration MDGS</a>
                     </div>
                     <!-- Exp 3 -->
                     <div class="timeline-item">
@@ -120,6 +127,8 @@
                             <li><strong>Réalisations :</strong> Participation aux Gemba Walks, observation terrain, développement d'une application Power Apps testée sur un cas industriel réel, intégration de la méthode TRIZ, et collecte des retours utilisateurs pour améliorer l'ergonomie.</li>
                             <li><strong>Stack & Outils :</strong> Power Apps, Power BI (visualisation), SharePoint (centralisation), TRIZ, Gemba Walk.</li>
                         </ul>
+
+                        <a class="proof-link" href="project-triz.html">Découvrir l’application Kaizen / TRIZ</a>
                     </div>
                 </div>
             </div>

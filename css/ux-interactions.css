@@ -1,0 +1,83 @@
+/* Small, useful states shared by the contact and projects pages. */
+.email-copy-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.65rem;
+}
+
+.copy-email-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--primary);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.copy-email-button:hover {
+  border-color: var(--primary);
+}
+
+.copy-email-button:focus-visible,
+.email-copy-fallback:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.copy-email-button[aria-busy="true"] { cursor: progress; }
+.copy-email-button::after {
+  content: '\2713';
+  width: 1em;
+  margin-left: 0.35rem;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.copy-email-button[data-copy-state="copied"]::after { opacity: 1; }
+
+.email-copy-fallback {
+  min-width: 0;
+  width: 100%;
+  max-width: 29ch;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.contact-mailto-help,
+.interaction-status,
+.project-filter-status {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.contact-mailto-help { margin: 0 0 0.85rem; }
+.contact-page .contact-form-actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+.interaction-status { margin: 0; }
+.interaction-status:not(:empty) { margin-top: 0.55rem; }
+.project-filter-status { margin: -0.75rem 0 1.5rem; }
+
+.copy-email-button[hidden],
+.email-copy-fallback[hidden],
+.project-filter-status[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-email-button,
+  .copy-email-button::after { transition: none; }
+}

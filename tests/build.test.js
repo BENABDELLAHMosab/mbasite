@@ -21,7 +21,11 @@ test('production resources are reachable, hashed by content, deterministic and i
             const hash = createHash('sha256').update(data).digest('hex').slice(0, 12);
             assert.ok(url.includes('.' + hash + '.'), source);
         }
-        for (const file of fs.readdirSync(output).filter(f => f.endsWith('.html'))) {
+        const htmlPages = fs.readdirSync(output).filter(f => f.endsWith('.html'));
+        const pageIds = new Map(htmlPages.map(file => [file, new Set(
+            [...fs.readFileSync(path.join(output, file), 'utf8').matchAll(/\bid="([^"]+)"/g)].map(match => match[1])
+        )]));
+        for (const file of htmlPages) {
             const html = fs.readFileSync(path.join(output, file), 'utf8');
             assert.match(html, /^<!DOCTYPE html>/);
             assert.equal((html.match(/<h1\b/g) || []).length, 1, file);
@@ -30,6 +34,19 @@ test('production resources are reachable, hashed by content, deterministic and i
             }
             assert.doesNotMatch(html, /<script\b(?![^>]*\bsrc=)[^>]*>\s*\S|\son\w+\s*=/i);
             assert.doesNotMatch(html, /cdnjs|fonts\.googleapis|three\.min\.js|background\.js/);
+            // Every contextual link and full-size image must survive production rewriting.
+            for (const match of html.matchAll(/\bhref="([^"]+)"/g)) {
+                const url = new URL(match[1].replaceAll('&amp;', '&'), 'https://www.benabdellahmosab.com/' + file);
+                if (url.origin !== 'https://www.benabdellahmosab.com') continue;
+                const destination = decodeURIComponent(url.pathname.slice(1)) || 'index.html';
+                assert.ok(fs.existsSync(path.join(output, destination)), `${file}: missing ${destination}`);
+                if (url.hash && pageIds.has(destination)) {
+                    assert.ok(pageIds.get(destination).has(decodeURIComponent(url.hash.slice(1))), `${file}: missing anchor ${url.href}`);
+                }
+            }
+        }
+        for (const slug of ['tmpa', 'etl', 'triz']) {
+            assert.ok(htmlPages.includes(`project-${slug}.html`), `published case study ${slug}`);
         }
         const css = fs.readFileSync(path.join(output, decodeURI(manifest['css/style.css'])), 'utf8');
         assert.ok(css.includes(manifest['assets/fonts/inter-latin.woff2']));

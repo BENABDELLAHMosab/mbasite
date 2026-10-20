@@ -19,6 +19,8 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/logo-mba-dark.png">
+    <link rel="stylesheet" href="css/recruiter-journey.css">
+    <link rel="stylesheet" href="css/ux-interactions.css">
 </head>
 
 <body>
@@ -40,12 +42,12 @@
                 <img width="554" height="505" id="brandLogo" src="assets/logo-mba-dark.png" alt="Logo MBA" class="brand-logo">
             </a>
 
-            <nav>
+            <nav aria-label="Navigation principale">
                 <ul class="nav-links">
                     <li><a href="about.html" class="nav-link">À propos</a></li>
                     <li><a href="skills.html" class="nav-link">Compétences</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
-                    <li><a href="projects.html" class="nav-link active">Projets</a></li>
+                    <li><a href="projects.html" class="nav-link active" aria-current="page">Projets</a></li>
                     <li><a href="experience.html" class="nav-link">Expérience</a></li>
                     <li><a href="contact.html" class="nav-link">Contact</a></li>
                     <span class="nav-indicator" aria-hidden="true"></span>
@@ -53,6 +55,7 @@
             </nav>
 
             <div class="header-actions">
+                <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" class="header-cv" target="_blank" rel="noopener noreferrer" aria-label="Consulter mon CV PDF dans un nouvel onglet">CV <span>PDF</span></a>
                 <div class="theme-switch-wrapper">
                     <label class="theme-switch" for="checkbox">
                         <input type="checkbox" id="checkbox" aria-label="Activer le thème sombre" />
@@ -62,7 +65,7 @@
             </div>
 
             <!-- Mobile Burger -->
-            <button class="burger-menu" aria-label="Open Menu" aria-expanded="false">
+            <button class="burger-menu" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-navigation">
                 <span class="burger-line"></span>
                 <span class="burger-line"></span>
                 <span class="burger-line"></span>
@@ -71,13 +74,14 @@
     </header>
 
     <!-- MOBILE MENU OVERLAY -->
-    <div class="mobile-nav-overlay" inert aria-hidden="true">
+    <div id="mobile-navigation" class="mobile-nav-overlay" role="navigation" aria-label="Navigation mobile" inert aria-hidden="true">
         <a href="about.html" class="nav-link">À propos</a>
         <a href="skills.html" class="nav-link">Compétences</a>
         <a href="services.html" class="nav-link">Services</a>
-        <a href="projects.html" class="nav-link active">Projets</a>
+        <a href="projects.html" class="nav-link active" aria-current="page">Projets</a>
         <a href="experience.html" class="nav-link">Expérience</a>
         <a href="contact.html" class="nav-link">Contact</a>
+        <a href="document/CV_Mosab_BEN_ABDELLAH_PFE_2027.pdf" class="nav-link mobile-cv-link" target="_blank" rel="noopener noreferrer">Consulter mon CV <span>PDF · nouvel onglet</span></a>
     </div>
 
     <main id="main" tabindex="-1">
@@ -96,12 +100,15 @@
                     <button class="filter-btn btn btn-outline" data-filter="mobile" style="padding: 0.5rem 1rem;">Mobile</button>
                 </div>
 
+                <p id="project-filter-status" class="project-filter-status" role="status" aria-live="polite" aria-atomic="true" hidden></p>
                 <div class="projects-grid">
 
                     <!-- Projet : TMPA UI Builder -->
-                    <article class="project-card" data-category="software">
-                        <div class="project-cover" style="background: #F2F4F7;">
-                            <img width="500" height="500" loading="lazy" src="assets/projects/tmpa-logo.webp" alt="Logo du projet TMPA UI Builder" class="project-cover-img" style="background-color: transparent;" data-fallback-src="assets/logo-mba-dark.png">
+                    <article id="project-tmpa" class="project-card" data-category="software">
+                        <div class="project-cover project-evidence-cover">
+                            <a data-case-link href="project-tmpa.html" aria-label="Découvrir : Vue réelle de l’éditeur TMPA UI Builder">
+                                <img width="1918" height="954" loading="lazy" decoding="async" src="assets/projects/evidence/tmpa-builder-640.webp" alt="Vue réelle de l’éditeur TMPA UI Builder">
+                            </a>
                         </div>
                         <div class="project-content">
                             <span class="tag" style="background: var(--primary); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Professionnel (TMPA)</span>
@@ -117,6 +124,7 @@
                                 <span class="tag">Docker</span>
                             </div>
                             <div class="project-links" style="margin-top: 1.5rem;">
+                                <a href="project-tmpa.html" data-case-link class="btn btn-primary case-link">Découvrir le projet <span aria-hidden="true">→</span></a>
                                 <a href="https://github.com/BENABDELLAHMosab/tmpa-ui-builder" target="_blank" class="btn btn-outline" style="display:block; text-align:center; padding: 0.5rem 1rem;" rel="noopener noreferrer">
                                     <svg class="fa-icon fab fa-github" style="width: 0.96875em;" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Code
                                 </a>
@@ -124,12 +132,11 @@
                         </div>
                     </article>
 
-                    <!-- Projet : Data Warehouse & ETL Pipeline -->
-                    <article class="project-card" data-category="data">
-                        <div class="project-cover">
-                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #047857 0%, #10b981 100%); display:flex; align-items:center; justify-content:center;">
-                                <svg class="fa-icon fas fa-database" style="width: 0.875em; font-size: 3rem; color: white; opacity:0.8;" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M448 80v48c0 44.2-100.3 80-224 80S0 172.2 0 128V80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6V288c0 44.2-100.3 80-224 80S0 332.2 0 288V186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6V432c0 44.2-100.3 80-224 80S0 476.2 0 432V346.1z"/></svg>
-                            </div>
+                    <article id="project-etl" class="project-card" data-category="data">
+                        <div class="project-cover project-evidence-cover">
+                            <a data-case-link href="project-etl.html" aria-label="Découvrir : Tableau de bord Power BI du projet ETL">
+                                <img width="1150" height="655" loading="lazy" decoding="async" src="assets/projects/evidence/etl-dashboard-overview-640.webp" alt="Tableau de bord Power BI du projet ETL">
+                            </a>
                         </div>
                         <div class="project-content">
                             <span class="tag" style="background: var(--text-muted); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Académique</span>
@@ -143,6 +150,7 @@
                                 <span class="tag">Power BI / DAX</span>
                             </div>
                             <div class="project-links" style="margin-top: 1.5rem;">
+                                <a href="project-etl.html" data-case-link class="btn btn-primary case-link">Découvrir le projet <span aria-hidden="true">→</span></a>
                                 <a href="https://github.com/BENABDELLAHMosab/Data-Warehouse-ETL-Pipeline" target="_blank" class="btn btn-outline" style="display:block; text-align:center; padding: 0.5rem 1rem;" rel="noopener noreferrer">
                                     <svg class="fa-icon fab fa-github" style="width: 0.96875em;" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Code
                                 </a>
@@ -150,8 +158,27 @@
                         </div>
                     </article>
 
-                    <!-- Projet : StreamLine -->
-                    <article class="project-card" data-category="software cloud">
+                    <article id="project-triz" class="project-card" data-category="software">
+                        <div class="project-cover project-evidence-cover">
+                            <a data-case-link href="project-triz.html" aria-label="Découvrir : Accueil de l’application Kaizen / TRIZ">
+                                <img width="1388" height="695" loading="lazy" decoding="async" src="assets/projects/evidence/yazaki-home-640.webp" alt="Accueil de l’application Kaizen / TRIZ">
+                            </a>
+                        </div>
+                        <div class="project-content">
+                            <span class="tag" style="background: var(--primary); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Professionnel (Yazaki)</span>
+                            <h3 class="project-title">Kaizen / TRIZ – Digitalisation</h3>
+                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Stage Été 2024. Application d’amélioration continue chez Yazaki.<br>
+                            <strong>Travail :</strong> Participation au développement Power Apps : définition d’un problème, cartes TRIZ et génération d’idées. SharePoint et automatisations Power Automate.</p>
+                            <div class="project-tags">
+                                <span class="tag">Power Apps</span>
+                                <span class="tag">Power Automate</span>
+                                <span class="tag">SharePoint</span>
+                            </div>
+                        <div class="project-links" style="margin-top: 1.5rem;"><a href="project-triz.html" data-case-link class="btn btn-primary case-link">Découvrir le projet <span aria-hidden="true">→</span></a></div>
+                        </div>
+                    </article>
+
+                    <article id="project-streamline" class="project-card" data-category="software cloud">
                         <div class="project-cover">
                             <div style="width:100%; height:170px; background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%); display:flex; align-items:center; justify-content:center;">
                                 <svg class="fa-icon fas fa-network-wired" style="width: 1.25em; font-size: 3rem; color: white; opacity:0.8;" viewBox="0 0 640 512" aria-hidden="true" focusable="false"><path d="M256 64H384v64H256V64zM240 0c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48h48v32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h96v32H80c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48H240c26.5 0 48-21.5 48-48V368c0-26.5-21.5-48-48-48H192V288H448v32H400c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48H560c26.5 0 48-21.5 48-48V368c0-26.5-21.5-48-48-48H512V288h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H352V192h48c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H240zM96 448V384H224v64H96zm320-64H544v64H416V384z"/></svg>
@@ -176,8 +203,7 @@
                         </div>
                     </article>
 
-                    <!-- Projet : Wasil -->
-                    <article class="project-card" data-category="software cloud">
+                    <article id="project-wasil" class="project-card" data-category="software cloud">
                         <div class="project-cover">
                             <div style="width:100%; height:170px; background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%); display:flex; align-items:center; justify-content:center;">
                                 <svg class="fa-icon fas fa-truck-fast" style="width: 1.25em; font-size: 3rem; color: white; opacity:0.8;" viewBox="0 0 640 512" aria-hidden="true" focusable="false"><path d="M112 0C85.5 0 64 21.5 64 48V96H16c-8.8 0-16 7.2-16 16s7.2 16 16 16H64 272c8.8 0 16 7.2 16 16s-7.2 16-16 16H64 48c-8.8 0-16 7.2-16 16s7.2 16 16 16H64 240c8.8 0 16 7.2 16 16s-7.2 16-16 16H64 16c-8.8 0-16 7.2-16 16s7.2 16 16 16H64 208c8.8 0 16 7.2 16 16s-7.2 16-16 16H64V416c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H112zM544 237.3V256H416V160h50.7L544 237.3zM160 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm272 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0z"/></svg>
@@ -202,8 +228,7 @@
                         </div>
                     </article>
 
-                    <!-- Projet : Moroccan Coins Detection -->
-                    <article class="project-card" data-category="ia software">
+                    <article id="project-coins" class="project-card" data-category="ia software">
                         <div class="project-cover">
                             <div style="width:100%; height:170px; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); display:flex; align-items:center; justify-content:center;">
                                 <svg class="fa-icon fas fa-coins" style="width: 1em; font-size: 3rem; color: white; opacity:0.8;" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M512 80c0 18-14.3 34.6-38.4 48c-29.1 16.1-72.5 27.5-122.3 30.9c-3.7-1.8-7.4-3.5-11.3-5C300.6 137.4 248.2 128 192 128c-8.3 0-16.4 .2-24.5 .6l-1.1-.6C142.3 114.6 128 98 128 80c0-44.2 86-80 192-80S512 35.8 512 80zM160.7 161.1c10.2-.7 20.7-1.1 31.3-1.1c62.2 0 117.4 12.3 152.5 31.4C369.3 204.9 384 221.7 384 240c0 4-.7 7.9-2.1 11.7c-4.6 13.2-17 25.3-35 35.5c0 0 0 0 0 0c-.1 .1-.3 .1-.4 .2l0 0 0 0c-.3 .2-.6 .3-.9 .5c-35 19.4-90.8 32-153.6 32c-59.6 0-112.9-11.3-148.2-29.1c-1.9-.9-3.7-1.9-5.5-2.9C14.3 274.6 0 258 0 240c0-34.8 53.4-64.5 128-75.4c10.5-1.5 21.4-2.7 32.7-3.5zM416 240c0-21.9-10.6-39.9-24.1-53.4c28.3-4.4 54.2-11.4 76.2-20.5c16.3-6.8 31.5-15.2 43.9-25.5V176c0 19.3-16.5 37.1-43.8 50.9c-14.6 7.4-32.4 13.7-52.4 18.5c.1-1.8 .2-3.5 .2-5.3zm-32 96c0 18-14.3 34.6-38.4 48c-1.8 1-3.6 1.9-5.5 2.9C304.9 404.7 251.6 416 192 416c-62.8 0-118.6-12.6-153.6-32C14.3 370.6 0 354 0 336V300.6c12.5 10.3 27.6 18.7 43.9 25.5C83.4 342.6 135.8 352 192 352s108.6-9.4 148.1-25.9c7.8-3.2 15.3-6.9 22.4-10.9c6.1-3.4 11.8-7.2 17.2-11.2c1.5-1.1 2.9-2.3 4.3-3.4V304v5.7V336zm32 0V304 278.1c19-4.2 36.5-9.5 52.1-16c16.3-6.8 31.5-15.2 43.9-25.5V272c0 10.5-5 21-14.9 30.9c-16.3 16.3-45 29.7-81.3 38.4c.1-1.7 .2-3.5 .2-5.3zM192 448c56.2 0 108.6-9.4 148.1-25.9c16.3-6.8 31.5-15.2 43.9-25.5V432c0 44.2-86 80-192 80S0 476.2 0 432V396.6c12.5 10.3 27.6 18.7 43.9 25.5C83.4 438.6 135.8 448 192 448z"/></svg>
@@ -228,8 +253,7 @@
                         </div>
                     </article>
 
-                    <!-- Projet : Dirhamy -->
-                    <article class="project-card" data-category="software cloud">
+                    <article id="project-dirhamy" class="project-card" data-category="software cloud">
                         <div class="project-cover">
                             <img width="183" height="57" loading="lazy" src="assets/projects/dirhamy.png" alt="Dirhamy Project" class="project-cover-img" data-fallback-src="assets/logo-mba-dark.png">
                         </div>
@@ -253,8 +277,7 @@
                         </div>
                     </article>
 
-                    <!-- Projet : GrowTrack (Soft Skills App) -->
-                    <article class="project-card" data-category="software cloud">
+                    <article id="project-growtrack" class="project-card" data-category="software cloud">
                         <div class="project-cover">
                             <img width="500" height="500" loading="lazy" src="assets/projects/growtrack.webp" alt="Grow Track Logo" class="project-cover-img" data-fallback-src="assets/logo-mba-dark.png">
                         </div>
@@ -267,16 +290,10 @@
                                 <span class="tag">GitHub Actions</span>
                                 <span class="tag">Cloud</span>
                             </div>
-                            <div class="project-links" style="margin-top: 1.5rem;">
-                                <a href="https://github.com/jawad3213/GrowTrackiiiiyyyy" target="_blank" class="btn btn-outline" style="display:block; text-align:center; padding: 0.5rem 1rem;" rel="noopener noreferrer">
-                                    <svg class="fa-icon fab fa-github" style="width: 0.96875em;" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> Code
-                                </a>
-                            </div>
                         </div>
                     </article>
 
-                    <!-- Projet : MDGS Migration -->
-                    <article class="project-card" data-category="software data">
+                    <article id="project-mdgs" class="project-card" data-category="software data">
                         <div class="project-cover">
                             <div style="width:100%; height:170px; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); display:flex; align-items:center; justify-content:center;">
                                 <svg class="fa-icon fas fa-server" style="width: 1em; font-size: 3rem; color: white; opacity:0.8;" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path d="M64 32C28.7 32 0 60.7 0 96v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm48 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM64 288c-35.3 0-64 28.7-64 64v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V352c0-35.3-28.7-64-64-64H64zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm56 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"/></svg>
@@ -295,28 +312,7 @@
                         </div>
                     </article>
 
-                    <!-- Projet : Digitalisation Qualité -->
-                    <article class="project-card" data-category="software">
-                        <div class="project-cover">
-                            <div style="width:100%; height:170px; background: linear-gradient(135deg, #7c3aed 0%, #2dd4bf 100%); display:flex; align-items:center; justify-content:center;">
-                                <svg class="fa-icon fas fa-mobile-alt" style="width: 0.75em; font-size: 3rem; color: white; opacity:0.8;" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M16 64C16 28.7 44.7 0 80 0H304c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H80c-35.3 0-64-28.7-64-64V64zM224 448a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM304 64H80V384H304V64z"/></svg>
-                            </div>
-                        </div>
-                        <div class="project-content">
-                            <span class="tag" style="background: var(--primary); color: white; margin-bottom: 0.5rem; display: inline-block;">Projet Professionnel (Yazaki)</span>
-                            <h3 class="project-title">Digitalisation Processus Qualité</h3>
-                            <p style="margin-bottom: 1rem;"><strong>Contexte :</strong> Stage Été 2024. Digitalisation terrain suite à des analyses Gemba Walk et TRIZ.<br>
-                            <strong>Travail :</strong> Conception UX/UI de l'application, intégration SharePoint, tableaux de bord Power BI et recette utilisateur.</p>
-                            <div class="project-tags">
-                                <span class="tag">Power Apps</span>
-                                <span class="tag">Power BI</span>
-                                <span class="tag">SharePoint</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Projet : BookNest -->
-                    <article class="project-card" data-category="mobile software">
+                    <article id="project-booknest" class="project-card" data-category="mobile software">
                         <div class="project-cover" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                             <img width="1024" height="1024" loading="lazy" src="assets/projects/booknest.webp" alt="Logo du projet BookNest" class="project-cover-img" style="background-color: transparent;" data-fallback-src="assets/logo-mba-dark.png">
                         </div>
@@ -338,8 +334,7 @@
                         </div>
                     </article>
 
-                    <!-- Projet : BricoliRent -->
-                    <article class="project-card" data-category="software">
+                    <article id="project-bricolirent" class="project-card" data-category="software">
                         <div class="project-cover" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                             <img width="1536" height="1024" loading="lazy" src="assets/projects/Logo de Bricolirent.webp" alt="Logo du projet BricoliRent" class="project-cover-img" style="background-color: transparent;" data-fallback-src="assets/logo-mba-dark.png">
                         </div>
