@@ -45,7 +45,8 @@ Le workflow `.github/workflows/quality.yml` lance l’installation, les tests et
 | `js/contact.js` | Brouillon e-mail et copie de l’adresse avec solution de repli |
 | `js/project-gallery.js` | Agrandissement accessible des captures et retour au projet dans sa catégorie |
 | `project-tmpa.html`, `project-etl.html`, `project-triz.html` | Fiches illustrées à partir des rapports fournis |
-| `css/recruiter-journey.css` | Accès au CV, actions mobiles, liens contextuels et fiches de projets |
+| `css/style.css` | Styles communs, navigation, accès au CV et disposition responsive de l’accueil |
+| `css/recruiter-journey.css` | Liens contextuels, fiches de projets et galeries |
 | `scripts/build.cjs` | Construction statique et versionnement des ressources, sans bibliothèque externe |
 | `scripts/preview.cjs` | Aperçu HTTP local de la construction |
 | `tests/` | Tests du thème, du chargement, du contact et de la construction |

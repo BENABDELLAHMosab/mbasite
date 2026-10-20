@@ -45,3 +45,15 @@ Après `npm run build`, lancer `npm run preview` et consulter :
 
 Les modifications sont locales ; aucun déploiement Vercel n’a été lancé.
 
+## Corrections de l’accueil mobile
+
+La formation « Master 2 DOSI — UBO Brest | Double diplomation ENSA Tanger – UBO » est placée immédiatement après la spécialité, avant les actions. Le menu mobile conserve uniquement « Consulter mon CV », centré comme les autres liens.
+
+Le lien CV de l’en-tête est réservé aux largeurs à partir de 992 px. Sur l’accueil mobile, les deux actions partagent une ligne ; l’accès au CV devient un lien discret sans badge PDF. Les titres, le texte et les espacements sont réduits, tout en conservant des cibles tactiles d’au moins 44 px pour les actions.
+
+Ces règles essentielles résident désormais dans `css/style.css`, afin que la navigation et la disposition de l’accueil restent correctes si la feuille complémentaire des fiches projets ne s’applique pas. Les trois feuilles de style publiques ont répondu HTTP 200 lors du diagnostic ; la cause précise de leur non-application sur le téléphone n’a pas pu être confirmée. L’animation originale du portrait est conservée.
+
+À 360 px de largeur utile et moins, les actions de l’accueil utilisent les libellés « Mes projets » et « Contact », afin de limiter les retours à la ligne lorsque l’affichage est agrandi. Le zoom du navigateur reste disponible.
+
+La différence d’échelle Firefox/Brave sur le téléphone de Mosab a été confirmée par son test : désactiver le « Dimensionnement automatique des polices » dans Firefox et conserver la taille manuelle à 100 % rend l’affichage comparable à Brave. Sa capture montre l’option automatique activée et le curseur manuel à 100 % grisé, donc inactif. Mozilla décrit ce suivi des réglages Android, qui peut agrandir la mise en page entière ([référence](https://bugzilla.mozilla.org/show_bug.cgi?id=1850808#c1)). Aucune réduction globale spécifique à Firefox n’est appliquée pour compenser une préférence d’accessibilité du navigateur.
+
