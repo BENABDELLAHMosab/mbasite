@@ -698,31 +698,6 @@ body.mobile-menu-open .progress-wrap {
   /* Force kill the wave to ensure 100% clean background */
 }
 
-/*
-   PATCH OVERLAY for Credibility Tags (Safe Fix)
-   Ensures the background behind tags is 100% Uniform Navy (#020617)
-*/
-[data-theme="dark"] .credibility-line {
-  position: relative;
-  z-index: 5;
-}
-
-[data-theme="dark"] .credibility-line::before {
-  content: "";
-  position: absolute;
-  inset: -40px -40vw -40px -40px;
-  /* Cover wide area */
-  background: #020617;
-  /* Exact base color */
-  z-index: -1;
-  box-shadow: 0 0 30px 30px #020617;
-  /* Feathered blend */
-  pointer-events: none;
-}
-
-
-
-
 /* New Hero Grid Container */
 .hero-container {
   display: grid;

@@ -57,3 +57,5 @@ Ces règles essentielles résident désormais dans `css/style.css`, afin que la 
 
 La différence d’échelle Firefox/Brave sur le téléphone de Mosab a été confirmée par son test : désactiver le « Dimensionnement automatique des polices » dans Firefox et conserver la taille manuelle à 100 % rend l’affichage comparable à Brave. Sa capture montre l’option automatique activée et le curseur manuel à 100 % grisé, donc inactif. Mozilla décrit ce suivi des réglages Android, qui peut agrandir la mise en page entière ([référence](https://bugzilla.mozilla.org/show_bug.cgi?id=1850808#c1)). Aucune réduction globale spécifique à Firefox n’est appliquée pour compenser une préférence d’accessibilité du navigateur.
 
+Le fond ajouté autrefois derrière les trois domaines de compétences a été supprimé : son débordement et son ombre recouvraient la fin du paragraphe de présentation en mode sombre. La section utilise désormais son fond existant, sans calque superposé au texte.
+
