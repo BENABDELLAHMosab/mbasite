@@ -18,8 +18,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/journey.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -28,7 +27,7 @@
     <link rel="icon" type="image/png" href="assets/logo-mba-dark.png">
 </head>
 
-<body>
+<body class="journey-page">
     <!-- PRELOADER -->
     <div id="preloader">
         <div class="loader-content">
@@ -88,7 +87,7 @@
 
     <main>
         <!-- ABOUT SECTION -->
-        <section id="about" class="section-padding hidden-scroll" style="padding-top: 120px;">
+        <section id="about" class="section-padding" style="padding-top: 120px;">
             <div class="container">
                 <h2 class="section-title">Profil & Parcours</h2>
                 <div class="about-grid-single">
@@ -112,8 +111,8 @@
                         </div>
 
                         <!-- Formation -->
-                        <div style="margin-top: 4rem;">
-                            <h3 style="margin-bottom: 2rem;">Formation Académique</h3>
+                        <div class="academic-section" style="margin-top: 4rem;">
+                            <h3 class="academic-heading" style="margin-bottom: 2rem;">Formation Académique</h3>
                             <div class="timeline">
                                 <div class="timeline-item">
                                     <div class="timeline-date">2026 — 2027</div>
@@ -154,7 +153,7 @@
         </section>
 
         <!-- ENGAGEMENTS SECTION -->
-        <section id="engagements" class="section-padding hidden-scroll">
+        <section id="engagements" class="section-padding">
             <div class="container">
                 <h2 class="section-title">Engagements & Vie Associative</h2>
                 <div class="timeline">
@@ -192,7 +191,7 @@
         </section>
 
         <!-- CAREER OBJECTIVE / HOBBIES -->
-        <section id="objective" class="section-padding hidden-scroll">
+        <section id="objective" class="section-padding">
             <div class="container">
                 <div class="objective-card" style="text-align:center; max-width:800px; margin:0 auto;">
                     <h2 style="margin-bottom: 1.5rem;">Centres d'Intérêt</h2>
@@ -223,6 +222,7 @@
 
     <!-- JS Script -->
     <script src="js/script.js"></script>
+    <script defer src="js/journey.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script defer src="js/background.js"></script>
 </body>

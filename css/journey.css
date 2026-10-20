@@ -1,0 +1,198 @@
+/* Reading motion for About and Experience; content stays visible without JS. */
+.journey-page {
+  --journey-wash: rgba(37, 99, 235, 0.055);
+  --journey-glow: rgba(37, 99, 235, 0.18);
+  --journey-track: rgba(55, 65, 81, 0.2);
+}
+
+[data-theme="dark"] .journey-page {
+  --journey-wash: rgba(34, 211, 238, 0.045);
+  --journey-glow: rgba(34, 211, 238, 0.2);
+  --journey-track: rgba(148, 163, 184, 0.22);
+}
+
+.journey-page main h2::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin: 1.25rem auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.journey-page .about-text .timeline {
+  text-align: left;
+}
+
+.journey-page .timeline {
+  --timeline-inset: 3rem;
+  isolation: isolate;
+  border-left: 0;
+  padding-left: var(--timeline-inset);
+}
+
+/* JS measures the rail from the centre of the first dot to the last. */
+.journey-page .timeline::before,
+.journey-page .timeline::after {
+  content: '';
+  position: absolute;
+  left: calc(0.5rem - 1px);
+  top: var(--rail-start, 0.85rem);
+  width: 2px;
+  height: var(--rail-length, calc(100% - 1.7rem));
+  border-radius: 2px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.journey-page .timeline::before {
+  background: var(--journey-track);
+}
+
+.journey-page .timeline::after {
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  box-shadow: 0 0 12px var(--journey-glow);
+  transform-origin: top;
+  transform: scaleY(var(--journey-progress, 1));
+}
+
+.journey-page .timeline-item {
+  isolation: isolate;
+  margin-bottom: 3.5rem;
+}
+
+.journey-page .timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.journey-page .timeline-item::before {
+  left: calc(0.5rem - var(--timeline-inset) - 7px);
+  top: 0.4rem;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--bg-body);
+  background: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+  z-index: 1;
+  transition: background-color 220ms ease, box-shadow 300ms ease;
+}
+
+.journey-page .timeline.is-tracked .timeline-item:not(.is-reached)::before {
+  background: var(--bg-body);
+  box-shadow: 0 0 0 1px var(--journey-track);
+}
+
+.journey-page .timeline-item.is-current::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 6px var(--journey-wash), 0 0 18px var(--journey-glow);
+}
+
+.journey-page .timeline-item::after {
+  content: '';
+  position: absolute;
+  inset: -1rem -1.25rem;
+  border: 1px solid var(--journey-glow);
+  border-radius: 1rem;
+  background: linear-gradient(110deg, var(--journey-wash), transparent 85%);
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 350ms ease;
+}
+
+.journey-page .timeline-item.is-current::after {
+  opacity: 1;
+}
+
+.journey-page .timeline-date {
+  transition: color 300ms ease;
+}
+
+.journey-page .timeline-item.is-current .timeline-date {
+  color: var(--primary);
+}
+
+/* Reveal text, never the rail itself: dots stay anchored while content enters. */
+.journey-page .journey-reveal:not(.timeline-item),
+.journey-page .timeline-item.journey-reveal > * {
+  transition: opacity 550ms ease, transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.journey-page .journey-reveal:not(.is-visible):not(.timeline-item),
+.journey-page .timeline-item.journey-reveal:not(.is-visible) > * {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.journey-page .timeline-item.journey-reveal.is-visible > :nth-child(2) {
+  transition-delay: 50ms;
+}
+
+.journey-page .timeline-item.journey-reveal.is-visible > :nth-child(3) {
+  transition-delay: 100ms;
+}
+
+.journey-page .timeline-item.journey-reveal.is-visible > :nth-child(4) {
+  transition-delay: 150ms;
+}
+
+.journey-page .highlight-item {
+  transition: opacity 550ms ease, transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.journey-page .objective-card {
+  position: relative;
+  padding: 2rem;
+  border: 1px solid var(--journey-glow);
+  border-radius: 1.25rem;
+  background: linear-gradient(120deg, var(--journey-wash), transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .journey-page .timeline-item:hover::after {
+    opacity: 1;
+  }
+
+  .journey-page .highlight-item.is-visible:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: 0 6px 18px var(--journey-glow);
+    transition-delay: 0ms;
+  }
+}
+
+@media (max-width: 600px) {
+  .journey-page .timeline {
+    --timeline-inset: 2rem;
+  }
+
+  .journey-page .timeline-item::after {
+    inset: -0.875rem -0.625rem;
+    border-radius: 0.75rem;
+  }
+
+  .journey-page .timeline-role {
+    font-size: 1.1rem;
+    line-height: 1.45;
+  }
+
+  .journey-page .objective-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce), print {
+  .journey-page .journey-reveal,
+  .journey-page .timeline-item.journey-reveal > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .journey-page .timeline::after {
+    transform: scaleY(1);
+  }
+}
