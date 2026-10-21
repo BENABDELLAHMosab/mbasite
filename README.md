@@ -84,6 +84,8 @@ Le bilan technique figure dans `docs/OPTIMISATIONS.md`. Les améliorations du pa
 
 Les dix pages indexables contiennent leurs métadonnées et données structurées dans le HTML initial. Modifier les textes SEO dans `scripts/seo.cjs`, puis exécuter `npm run seo:write`. Cette commande synchronise les pages, `sitemap.xml`, `robots.txt` et les empreintes des blocs JSON-LD dans `vercel.json`. Après ajout, suppression ou changement de titre d’une carte projet, relancer aussi cette commande pour mettre à jour la liste structurée. `npm run seo:check` et la construction refusent des métadonnées désynchronisées.
 
+Pour `vercel.json`, le contrôle compare la valeur CSP générée, sans imposer une présentation du JSON. Une configuration compacte, indentée autrement, avec des clés réordonnées ou sans retour final est acceptée sans réécriture. Des empreintes manquantes, incorrectes ou supplémentaires restent bloquantes, comme l’ajout de `unsafe-inline` à `script-src` ; `seo:write` les corrige sans modifier les autres paramètres de déploiement. La commande de construction Vercel reste `npm run build`.
+
 La page 404 reste exclue de l’indexation. Les filtres de projets conservent leur fonctionnement et pointent vers la même URL canonique sans paramètres. Le portrait de partage garde son URL publique stable. Les liens d’accueil des sources utilisent `index.html` pour fonctionner aussi lors d’une ouverture directe des fichiers. La construction les convertit en `/` pour le site déployé ; sur l’accueil, le logo conserve son lien `#top`.
 
 Le bilan, les requêtes ciblées et les étapes Search Console après déploiement sont dans [docs/SEO.md](docs/SEO.md).

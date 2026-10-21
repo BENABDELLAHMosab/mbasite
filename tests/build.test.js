@@ -16,7 +16,13 @@ test('production resources are reachable, hashed by content, deterministic and i
         for (const file of fs.readdirSync(root)) {
             if (!excluded.has(file)) fs.cpSync(path.join(root, file), path.join(temp, file), { recursive: true });
         }
+        // Hosting tools may serialize JSON differently before running the build.
+        // A compact config with no final newline must build without being rewritten.
+        const configFile = path.join(temp, 'vercel.json');
+        const compactConfig = JSON.stringify(JSON.parse(fs.readFileSync(configFile, 'utf8')));
+        fs.writeFileSync(configFile, compactConfig);
         const { output, manifest } = build(temp);
+        assert.equal(fs.readFileSync(configFile, 'utf8'), compactConfig);
         for (const [source, url] of Object.entries(manifest)) {
             const data = fs.readFileSync(path.join(output, decodeURI(url)));
             const hash = createHash('sha256').update(data).digest('hex').slice(0, 12);

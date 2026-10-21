@@ -210,8 +210,17 @@ function syncSeo(root = path.resolve(__dirname, '..'), { write = false } = {}) {
     const config = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
     const csp = config.headers.find(rule => rule.source === '/(.*)').headers.find(header => header.key === 'Content-Security-Policy');
     // Only the exact JSON data blocks are authorized; executable inline scripts stay forbidden.
-    csp.value = csp.value.replace(/script-src\s+[^;]+/, "script-src 'self' " + [...new Set(hashes)].join(' '));
-    sync('vercel.json', JSON.stringify(config, null, 2) + '\n');
+    const expectedCsp = csp.value.replace(/script-src\s+[^;]+/, "script-src 'self' " + [...new Set(hashes)].join(' '));
+    // The config is user/platform-owned JSON, not a generated text file. Its
+    // indentation, key order, escapes and final newline do not change the CSP.
+    // Check only the generated value; check mode must never rewrite the config.
+    if (csp.value !== expectedCsp) {
+        changed.push('vercel.json');
+        if (write) {
+            csp.value = expectedCsp;
+            fs.writeFileSync(path.join(root, 'vercel.json'), JSON.stringify(config, null, 2) + '\n');
+        }
+    }
     if (changed.length && !write) throw new Error('SEO metadata is stale. Run npm run seo:write: ' + changed.join(', '));
     return changed;
 }

@@ -115,6 +115,68 @@ test('stale metadata fails before an existing production build can be replaced',
     }
 });
 
+test('equivalent Vercel JSON serialization is accepted without rewriting configuration', () => {
+    const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'portfolio-seo-json-'));
+    try {
+        for (const file of [...Object.keys(pages).map(name => name + '.html'), 'vercel.json', 'robots.txt', 'sitemap.xml']) {
+            fs.copyFileSync(path.join(root, file), path.join(temp, file));
+        }
+        const config = JSON.parse(read('vercel.json'));
+        function reorder(value) {
+            if (Array.isArray(value)) return value.map(reorder);
+            if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).reverse().map(([key, child]) => [key, reorder(child)]));
+            return value;
+        }
+        const variants = [
+            JSON.stringify(config),
+            JSON.stringify(config, null, 4),
+            JSON.stringify(config, null, '\t') + '\r\n',
+            JSON.stringify(reorder(config)),
+            JSON.stringify(config).replaceAll('/', '\\/').replaceAll('self', '\\u0073elf')
+        ];
+        for (const content of variants) {
+            assert.deepEqual(JSON.parse(content), config, 'the actual configuration is unchanged');
+            fs.writeFileSync(path.join(temp, 'vercel.json'), content);
+            assert.deepEqual(syncSeo(temp), []);
+            assert.equal(fs.readFileSync(path.join(temp, 'vercel.json'), 'utf8'), content, 'check mode is read-only');
+            assert.deepEqual(syncSeo(temp, { write: true }), []);
+            assert.equal(fs.readFileSync(path.join(temp, 'vercel.json'), 'utf8'), content, 'write mode preserves an already valid config');
+        }
+    } finally {
+        assert.ok(path.resolve(temp).startsWith(path.resolve(os.tmpdir()) + path.sep));
+        fs.rmSync(temp, { recursive: true, force: true });
+    }
+});
+
+test('reformatted Vercel configuration still rejects and repairs genuinely stale CSP values', () => {
+    const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'portfolio-seo-csp-'));
+    try {
+        for (const file of [...Object.keys(pages).map(name => name + '.html'), 'vercel.json', 'robots.txt', 'sitemap.xml']) {
+            fs.copyFileSync(path.join(root, file), path.join(temp, file));
+        }
+        const original = JSON.parse(read('vercel.json'));
+        const header = config => config.headers.find(rule => rule.source === '/(.*)').headers.find(item => item.key === 'Content-Security-Policy');
+        const mutations = [
+            value => value.replace(/ 'sha256-[^']+'/, ''),
+            value => value.replace(/'sha256-[^']+'/, "'sha256-stale'"),
+            value => value.replace("script-src 'self'", "script-src 'self' 'sha256-extra'"),
+            value => value.replace("script-src 'self'", "script-src 'self' 'unsafe-inline'")
+        ];
+        for (const mutate of mutations) {
+            const config = structuredClone(original);
+            header(config).value = mutate(header(config).value);
+            fs.writeFileSync(path.join(temp, 'vercel.json'), JSON.stringify(config));
+            assert.throws(() => syncSeo(temp), /SEO metadata is stale.*vercel\.json/);
+            assert.deepEqual(syncSeo(temp, { write: true }), ['vercel.json']);
+            assert.deepEqual(JSON.parse(fs.readFileSync(path.join(temp, 'vercel.json'), 'utf8')), original, 'other headers and deployment settings are preserved');
+            assert.deepEqual(syncSeo(temp), []);
+        }
+    } finally {
+        assert.ok(path.resolve(temp).startsWith(path.resolve(os.tmpdir()) + path.sep));
+        fs.rmSync(temp, { recursive: true, force: true });
+    }
+});
+
 test('HTTP preview preserves canonical filters, permanent redirects and genuine 404 responses', async t => {
     const server = createPreview(root);
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
