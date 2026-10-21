@@ -5,6 +5,7 @@ const path = require('node:path');
 const os = require('node:os');
 const { createHash } = require('node:crypto');
 const { build } = require('../scripts/build.cjs');
+const { validateScripts } = require('../scripts/seo.cjs');
 const root = path.resolve(__dirname, '..');
 
 test('production resources are reachable, hashed by content, deterministic and isolated from source files', () => {
@@ -22,6 +23,8 @@ test('production resources are reachable, hashed by content, deterministic and i
             assert.ok(url.includes('.' + hash + '.'), source);
         }
         const htmlPages = fs.readdirSync(output).filter(f => f.endsWith('.html'));
+        const csp = JSON.parse(fs.readFileSync(path.join(temp, 'vercel.json'), 'utf8')).headers[0].headers
+            .find(header => header.key === 'Content-Security-Policy').value;
         const pageIds = new Map(htmlPages.map(file => [file, new Set(
             [...fs.readFileSync(path.join(output, file), 'utf8').matchAll(/\bid="([^"]+)"/g)].map(match => match[1])
         )]));
@@ -32,7 +35,19 @@ test('production resources are reachable, hashed by content, deterministic and i
             for (const match of html.matchAll(/\b(?:src|href|data-fallback-src)="(\/static\/[^"<>]+)"/g)) {
                 assert.ok(fs.existsSync(path.join(output, decodeURI(match[1]))), `${file}: ${match[1]}`);
             }
-            assert.doesNotMatch(html, /<script\b(?![^>]*\bsrc=)[^>]*>\s*\S|\son\w+\s*=/i);
+            validateScripts(html, file, csp);
+            const homeHref = html.match(/<a\b[^>]*href="([^"]+)"[^>]*class="(?:brand|btn-home)"/)[1];
+            const pageUrl = file === 'index.html' ? 'https://www.benabdellahmosab.com/' :
+                'https://www.benabdellahmosab.com/' + (file === '404.html' ? 'missing/nested/page' : file);
+            const homeUrl = new URL(homeHref, pageUrl);
+            homeUrl.hash = '';
+            assert.equal(homeUrl.href, 'https://www.benabdellahmosab.com/', file + ': production home is canonical');
+            if (file !== '404.html') {
+                const canonical = 'https://www.benabdellahmosab.com/' + (file === 'index.html' ? '' : file);
+                assert.ok(html.includes(`rel="canonical" href="${canonical}"`), file);
+                assert.match(html, /property="og:image" content="https:\/\/www\.benabdellahmosab\.com\/Img\/profile_main\.jpg"/);
+                assert.ok(html.includes('type="application/ld+json"'), file);
+            }
             assert.doesNotMatch(html, /cdnjs|fonts\.googleapis|three\.min\.js|background\.js/);
             // Every contextual link and full-size image must survive production rewriting.
             for (const match of html.matchAll(/\bhref="([^"]+)"/g)) {

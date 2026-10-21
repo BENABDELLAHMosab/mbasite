@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.js",
+    "seo:check": "node scripts/seo.cjs",
+    "seo:write": "node scripts/seo.cjs --write",
     "build": "node scripts/build.cjs",
     "preview": "node scripts/preview.cjs"
   },

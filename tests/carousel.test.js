@@ -40,7 +40,7 @@ function fixture({ reduced = false, supported = true } = {}) {
         const slide = element();
         link.setAttribute('href', 'assets/projects/evidence/shot-' + index + '.webp');
         link.querySelector = selector => selector === 'img' ? image : null;
-        link.closest = selector => selector === 'figure' ? slide : null;
+        link.closest = selector => selector === 'figure' ? slide : selector === '[data-gallery-link]' ? link : null;
         slide.querySelector = selector => ({
             '[data-gallery-link]': link, 'img': image,
             '[data-gallery-caption]': figureCaption, 'figcaption': figureCaption
@@ -104,6 +104,25 @@ test('carousel arrow keys preserve text-entry and modified shortcuts', () => {
         assert.equal(f.root.emit('keydown', { key: 'ArrowRight', ...event }).defaultPrevented, false);
         assert.equal(f.count.textContent, '2 / 3');
     }
+});
+
+test('arrow navigation from a capture transfers focus to the newly visible capture, including wrapping', () => {
+    const f = fixture(); initProjectCarousel(f.root, f.window);
+    const first = f.slides[0].link;
+    first.focus();
+    assert.equal(f.root.emit('keydown', { key: 'ArrowRight', target: first }).defaultPrevented, true);
+    assert.equal(f.slides[0].slide.hidden, true);
+    assert.equal(f.slides[1].slide.hidden, false);
+    assert.equal(f.slides[1].link.focusCount, 1);
+    f.root.emit('keydown', { key: 'ArrowRight', target: f.slides[1].link });
+    assert.equal(f.slides[2].link.focusCount, 1, 'consecutive arrows remain in the carousel');
+    // A nested image also belongs to the link that is about to be hidden.
+    f.root.emit('keydown', { key: 'ArrowRight', target: { closest: () => f.slides[2].link } });
+    assert.equal(f.slides[0].slide.hidden, false);
+    assert.equal(first.focusCount, 2, 'wrapping restores focus to the first visible capture');
+    f.root.emit('keydown', { key: 'ArrowLeft', target: f.root });
+    assert.equal(f.slides[2].link.focusCount, 1, 'navigation from the region itself keeps focus on the region');
+    assert.equal(f.count.textContent, '3 / 3');
 });
 
 test('rapid navigation cancels prior fades and reduced motion leaves all changes immediate', () => {

@@ -1,4 +1,43 @@
 /* Recruiter journey: reuse the portfolio palette, spacing and controls. */
+/* Semantic h2 headings retain the previous card and timeline typography. */
+h2.content-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: normal;
+  margin: 0 0 0.5rem;
+  text-align: left;
+}
+h2.content-heading.project-title,
+h2.content-heading.timeline-role {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.about-text h2.content-heading {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  text-align: inherit;
+}
+.academic-section h3.timeline-role {
+  margin-bottom: 0;
+}
+.page-intro {
+  max-width: 68ch;
+  margin: -0.5rem auto 2.5rem;
+  text-align: center;
+  text-wrap: pretty;
+}
+.context-link {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.context-link:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
 .sr-only {
   position: absolute;
   width: 1px;

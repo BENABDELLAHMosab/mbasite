@@ -55,10 +55,15 @@ function initProjectFilters(document, window) {
             try {
                 const pageUrl = new URL(window.location.href);
                 const destination = new URL(link.getAttribute('href'), pageUrl);
-                if (destination.origin !== pageUrl.origin || !/^\/project-[a-z0-9-]+\.html$/.test(destination.pathname)) return;
+                const filename = destination.pathname.split('/').pop();
+                if (new URL('.', destination).href !== new URL('.', pageUrl).href ||
+                    !/^project-[a-z0-9-]+\.html$/.test(filename)) return;
                 if (category === 'all') destination.searchParams.delete('category');
                 else destination.searchParams.set('category', category);
-                link.setAttribute('href', destination.pathname + destination.search + destination.hash);
+                // A file URL's pathname starts with the drive, not a portable
+                // browser-relative path. Keep sibling links relative in that mode.
+                link.setAttribute('href', (pageUrl.protocol === 'file:' ? filename : destination.pathname) +
+                    destination.search + destination.hash);
             } catch { /* Leave malformed or external links untouched. */ }
         });
 

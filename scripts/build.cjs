@@ -2,12 +2,17 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
+const { pages: seoPages, origin, syncSeo, validateScripts } = require('./seo.cjs');
 
-const pages = ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', 'project-tmpa', 'project-etl', 'project-triz', '404'];
-const origin = 'https://www.benabdellahmosab.com';
+const pages = [...Object.keys(seoPages), '404'];
 const assetPattern = /^(?:assets|css|js|Img|document)\//;
 
 function build(root = path.resolve(__dirname, '..')) {
+    // Stop before replacing a working build if metadata or its CSP hashes are stale.
+    syncSeo(root);
+    const config = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
+    const allowedHashes = config.headers.find(rule => rule.source === '/(.*)').headers
+        .find(header => header.key === 'Content-Security-Policy').value;
     const output = path.resolve(root, 'dist');
     // Never clean a configurable or arbitrary path, even when called from a test.
     if (path.dirname(output) !== path.resolve(root) || path.basename(output) !== 'dist') {
@@ -75,18 +80,20 @@ function build(root = path.resolve(__dirname, '..')) {
         // One synchronous request resolves the theme and starts the loading deadline before CSS.
         html = html.replace(/<script src="js\/theme.js"><\/script>\s*<script src="js\/preloader.js"><\/script>/,
             '<script src="/js/boot.js"></script>');
-        html = html.replace(/\b(src|href|data-fallback-src|content)="([^"<>]+)"/g,
+        // Source links work when opened with file://; deployed links use the canonical root.
+        html = html.replace(/\bhref="(?:\.\/)?index\.html([?#][^"]*)?"/g,
+            (whole, suffix = '') => `href="/${suffix}"`);
+        html = html.replace(/\b(src|href|data-fallback-src)="([^"<>]+)"/g,
             (whole, attribute, url) => `${attribute}="${rewrite(url)}"`);
         html = html.replace(/\bsrcset="([^"]+)"/g, (whole, value) => 'srcset="' + value.split(',').map(candidate => {
             const match = candidate.trim().match(/^(\S+)\s+(\d+(?:\.\d+)?[wx])$/);
             if (!match) throw new Error(`Invalid responsive image candidate: ${candidate}`);
             return rewrite(match[1]) + ' ' + match[2];
         }).join(', ') + '"');
-        if (/<script\b(?![^>]*\bsrc=)[^>]*>\s*\S/i.test(html) || /\son\w+\s*=/i.test(html)) {
-            throw new Error(`Inline JavaScript is forbidden by the CSP: ${name}.html`);
-        }
+        validateScripts(html, name + '.html', allowedHashes);
         write(name + '.html', html);
     }
+    // Social metadata keeps a stable image URL across deployments and caching bots.
     // Preserve public URLs used by CV links, social previews and earlier theme scripts.
     // The logos must also work for an already-open page using their unversioned URLs.
     for (const file of [

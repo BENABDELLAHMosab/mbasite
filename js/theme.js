@@ -23,7 +23,9 @@
         const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
         if (toggleSwitch) toggleSwitch.checked = theme === 'dark';
 
-        const logoPath = theme === 'light' ? '/assets/logo-mba-light.png' : '/assets/logo-mba-dark.png';
+        // Source pages can also be opened with file://. The build converts these
+        // relative asset URLs to versioned, root-absolute URLs for deployment.
+        const logoPath = theme === 'light' ? 'assets/logo-mba-light.png' : 'assets/logo-mba-dark.png';
         const favicon = document.querySelector('link[rel="icon"]');
         if (favicon) favicon.setAttribute('href', logoPath);
         // Keep the logo URL selected by the HTML/build. CSS already adapts its

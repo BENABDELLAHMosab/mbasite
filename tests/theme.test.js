@@ -1,12 +1,14 @@
 const assert = require('node:assert/strict');
-const { readFileSync } = require('node:fs');
+const { existsSync, readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const { test } = require('node:test');
 const { runInNewContext } = require('node:vm');
+const { fileURLToPath, pathToFileURL } = require('node:url');
 
 const root = join(__dirname, '..');
 const source = readFileSync(join(root, 'js/theme.js'), 'utf8');
 const key = 'portfolio-theme';
+const pages = ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', 'project-tmpa', 'project-etl', 'project-triz', '404'];
 
 function createStorage(value = null) {
     const values = new Map(value === null ? [] : [[key, value]]);
@@ -78,12 +80,40 @@ function createPage({ dark = false, storage = createStorage(), hasSwitch = true 
 }
 
 test('all portfolio pages, including project details, load the theme before every stylesheet', () => {
-    for (const name of ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact', 'project-tmpa', 'project-etl', 'project-triz', '404']) {
+    for (const name of pages) {
         const html = readFileSync(join(root, `${name}.html`), 'utf8');
         const themeScript = /<script src="\/?js\/theme\.js"><\/script>/;
         assert.equal(html.split(themeScript).length - 1, 1, name);
         assert.ok(html.search(themeScript) < html.search(/<link\b[^>]*rel="stylesheet"/), name);
         assert.ok(html.search(themeScript) < html.indexOf('</head>'), name);
+    }
+});
+
+test('source page scripts, styles, font preloads and favicons resolve to real files in a local preview', () => {
+    for (const name of pages) {
+        const pagePath = join(root, `${name}.html`);
+        const html = readFileSync(pagePath, 'utf8');
+        const pageUrl = pathToFileURL(pagePath);
+        for (const tag of html.match(/<(?:script|link)\b[^>]*>/g) || []) {
+            const source = tag.match(/\b(?:src|href)="([^"]+)"/)?.[1];
+            const isResource = tag.startsWith('<script') || /\brel="(?:stylesheet|preload|icon)"/.test(tag);
+            if (!source || !isResource || /^(?:https?:)?\/\//.test(source)) continue;
+            const resolved = fileURLToPath(new URL(source, pageUrl));
+            assert.ok(resolved.startsWith(root), `${name}: ${source} escapes the portfolio directory`);
+            assert.ok(existsSync(resolved), `${name}: ${source} is missing in a file preview`);
+        }
+    }
+});
+
+test('theme switching keeps the favicon inside the portfolio in a file preview', () => {
+    const page = createPage();
+    const pageUrl = pathToFileURL(join(root, 'index.html'));
+    page.ready();
+    for (const theme of ['dark', 'light']) {
+        page.choose(theme);
+        const iconPath = fileURLToPath(new URL(page.favicon.href, pageUrl));
+        assert.equal(iconPath, join(root, 'assets', `logo-mba-${theme}.png`));
+        assert.ok(existsSync(iconPath));
     }
 });
 
@@ -112,7 +142,7 @@ for (const dark of [false, true]) {
         page.systemChange(dark);
         assert.equal(page.theme(), choice);
         assert.equal(page.colorScheme(), choice);
-        assert.equal(page.favicon.href, `/assets/logo-mba-${choice}.png`);
+        assert.equal(page.favicon.href, `assets/logo-mba-${choice}.png`);
         assert.equal(page.logo.src, 'logo-selected-by-html.png');
         const nextPage = createPage({ dark, storage });
         assert.equal(nextPage.theme(), choice);
@@ -211,7 +241,7 @@ test('pages without a switch or brand logo still apply the theme and favicon', (
     page.ready();
     page.restore();
     assert.equal(page.theme(), 'dark');
-    assert.equal(page.favicon.href, '/assets/logo-mba-dark.png');
+    assert.equal(page.favicon.href, 'assets/logo-mba-dark.png');
 });
 
 test('theme changes and history restoration never overwrite the logo URL selected by the HTML build', () => {

@@ -156,6 +156,40 @@ test('case-study links carry the current validated category from initial deep li
     assert.equal(unknown.caseLinks[0].getAttribute('href'), '/project-tmpa.html');
 });
 
+test('case-study links preserve the category when the portfolio is opened as local files', () => {
+    const href = 'file:///C:/Users/Pro/My%20Portfolio/projects.html?category=data#project-etl';
+    const view = page({ href });
+    assert.equal(view.caseLinks[0].getAttribute('href'), 'project-tmpa.html?category=data');
+    assert.equal(view.caseLinks[1].getAttribute('href'), 'project-etl.html?from=featured&category=data#overview');
+    const destination = new URL(view.caseLinks[1].getAttribute('href'), href);
+    assert.equal(destination.pathname, '/C:/Users/Pro/My%20Portfolio/project-etl.html');
+    view.click('software');
+    assert.equal(view.caseLinks[0].getAttribute('href'), 'project-tmpa.html?category=software');
+    view.click('all');
+    assert.equal(view.caseLinks[1].getAttribute('href'), 'project-etl.html?from=featured#overview');
+});
+
+test('case-study links retain hosted subdirectories, query parameters and fragments', () => {
+    const href = 'https://portfolio.test/portfolio/projects.html?category=data';
+    const view = page({ href });
+    assert.equal(view.caseLinks[0].getAttribute('href'), '/portfolio/project-tmpa.html?category=data');
+    assert.equal(view.caseLinks[1].getAttribute('href'), '/portfolio/project-etl.html?from=featured&category=data#overview');
+    view.click('cloud');
+    assert.equal(new URL(view.caseLinks[0].getAttribute('href'), href).href,
+        'https://portfolio.test/portfolio/project-tmpa.html?category=cloud');
+    view.click('all');
+    assert.equal(view.caseLinks[1].getAttribute('href'), '/portfolio/project-etl.html?from=featured#overview');
+});
+
+test('category propagation leaves same-origin projects outside the portfolio directory untouched', () => {
+    const view = page({ href: 'https://portfolio.test/portfolio/projects.html' });
+    view.caseLinks[0].setAttribute('href', '../project-tmpa.html?from=elsewhere#overview');
+    view.caseLinks[1].setAttribute('href', 'https://portfolio.test/other/project-etl.html');
+    view.click('data');
+    assert.equal(view.caseLinks[0].getAttribute('href'), '../project-tmpa.html?from=elsewhere#overview');
+    assert.equal(view.caseLinks[1].getAttribute('href'), 'https://portfolio.test/other/project-etl.html');
+});
+
 test('filtering drops only an anchor whose project becomes hidden, keeping visible and unrelated targets', () => {
     const view = page({ href: 'https://portfolio.test/projects.html?category=data#project-etl' });
     view.click('software');

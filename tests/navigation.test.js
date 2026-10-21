@@ -175,3 +175,38 @@ test('modified and middle clicks keep native link behavior and restore focus in 
     ordinary.links[0].emit('click');
     assert.equal(ordinary.burger.focusCount, 0, 'ordinary navigation need not move focus in the page being replaced');
 });
+
+test('every portfolio page provides native navigation and isolates fallback styling to noscript', () => {
+    const routes = ['index', 'about', 'skills', 'services', 'projects', 'experience', 'contact',
+        'project-tmpa', 'project-etl', 'project-triz'];
+    const expectedLinks = ['about.html', 'skills.html', 'services.html', 'projects.html', 'experience.html', 'contact.html'];
+    for (const route of routes) {
+        const html = fs.readFileSync(path.join(__dirname, '..', route + '.html'), 'utf8');
+        const head = html.match(/<head>[\s\S]*?<\/head>/)[0];
+        const fallback = head.match(/<noscript>\s*<link\b[^>]*href="([^\"]+)"[^>]*>\s*<\/noscript>/);
+        assert.ok(fallback, route + ': stylesheet is available when scripts are disabled');
+        assert.ok(fs.existsSync(path.resolve(__dirname, '..', fallback[1])), route + ': fallback resource exists');
+        assert.ok(head.indexOf(fallback[0]) > head.lastIndexOf('<link rel="stylesheet"', head.indexOf(fallback[0])),
+            route + ': fallback follows regular styling');
+        assert.ok(!head.replace(fallback[0], '').includes(fallback[1]), route + ': scripts-enabled layout does not load fallback styling');
+        const navigation = html.match(/<nav aria-label="Navigation principale">([\s\S]*?)<\/nav>/)[1];
+        const nativeNavigation = navigation.replace(/<li\b[^>]*class="nav-indicator"[^>]*>[\s\S]*?<\/li>/, '');
+        assert.doesNotMatch(nativeNavigation, /\s(?:inert|hidden)(?=[\s=>])|aria-hidden="true"/);
+        assert.deepEqual([...navigation.matchAll(/<a\b[^>]*href="([^\"]+)"/g)].map(match => match[1]), expectedLinks, route);
+        const list = navigation.match(/<ul\b[^>]*>([\s\S]*?)<\/ul>/)[1];
+        assert.equal(list.replace(/<li\b[^>]*>[\s\S]*?<\/li>/g, '').trim(), '',
+            route + ': all direct list children are list items');
+    }
+});
+
+test('the initial HTML keeps all project cards and native contact submission available without scripts', () => {
+    const projects = fs.readFileSync(path.join(__dirname, '../projects.html'), 'utf8');
+    const cards = [...projects.matchAll(/<article\b[^>]*class="project-card"[^>]*>/g)];
+    assert.ok(cards.length > 0);
+    for (const [tag] of cards) assert.doesNotMatch(tag, /\bhidden\b|display\s*:\s*none/);
+    const contact = fs.readFileSync(path.join(__dirname, '../contact.html'), 'utf8');
+    const form = contact.match(/<form\b[^>]*id="contactForm"[^>]*>/)[0];
+    assert.match(form, /action="mailto:[^\"]+"/);
+    assert.match(form, /method="post"/);
+    assert.doesNotMatch(form, /\bhidden\b|\bdisabled\b/);
+});

@@ -54,7 +54,11 @@ function initProjectCarousel(root, window) {
             ['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target?.tagName)) return;
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         event.preventDefault();
+        const focusedCapture = links.includes(event.target?.closest?.('[data-gallery-link]'));
         select(index + (event.key === 'ArrowRight' ? 1 : -1));
+        // Hiding a focused slide otherwise sends keyboard focus back to the
+        // document, so further arrow keys stop reaching this carousel.
+        if (focusedCapture) links[index].focus({ preventScroll: true });
     });
     motion?.addEventListener?.('change', () => { if (motion.matches) animation?.cancel(); });
     select(0, { animate: false, announce: false });

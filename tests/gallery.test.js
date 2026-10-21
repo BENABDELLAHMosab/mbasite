@@ -89,6 +89,18 @@ test('project return destination keeps only known categories and safe project an
     assert.equal(projectGalleryReturnHref('https://portfolio.test/', ''), null);
 });
 
+test('filtered return links resolve inside the same local or hosted portfolio directory', () => {
+    for (const [detail, expected] of [
+        ['file:///C:/Users/Pro/My%20Portfolio/project-etl.html?category=data&from=featured#overview',
+            'file:///C:/Users/Pro/My%20Portfolio/projects.html?category=data#project-etl'],
+        ['https://portfolio.test/portfolio/project-etl.html?category=data&from=featured#overview',
+            'https://portfolio.test/portfolio/projects.html?category=data#project-etl']
+    ]) {
+        const returnHref = projectGalleryReturnHref(detail, 'project-etl');
+        assert.equal(new URL(returnHref, detail).href, expected);
+    }
+});
+
 test('unsupported dialogs preserve image navigation and the filtered return link', () => {
     const state = page({ supported: false });
     assert.equal(state.returnLink.href, 'projects.html?category=data#project-etl');

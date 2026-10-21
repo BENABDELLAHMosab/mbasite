@@ -10,7 +10,7 @@
         positions: []
     }));
     const revealElements = page.querySelectorAll(
-        'main .container > h2, main .container > h1.page-title, .about-text > h3, .about-text > p, .academic-heading, ' +
+        'main .container > h2, main .container > h1.page-title, .about-text > .profile-heading, .about-text > p, .academic-heading, ' +
         '.highlight-item, .timeline-item, .objective-card'
     );
     let frame = null;

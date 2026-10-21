@@ -8,6 +8,7 @@ Utiliser Node.js 22 ou supérieur et servir les fichiers en HTTP :
 
 ```sh
 npm ci --ignore-scripts
+npm run seo:check
 npm test
 npm run build
 npm run preview
@@ -26,7 +27,8 @@ La configuration du dépôt est dans `vercel.json` :
 - ressources dans `dist/static` : nom contenant une empreinte du contenu, cache navigateur d’un an ;
 - HTML et URL publiques stables (dont les deux logos) : revalidation à chaque visite ;
 - fichier `404.html` conservé, sans redirection globale vers l’accueil ;
-- scripts autorisés uniquement depuis le site, sans script JavaScript intégré au HTML.
+- scripts exécutables autorisés uniquement depuis le site ; les blocs JSON-LD statiques sont validés et autorisés par leur empreinte CSP exacte ;
+- redirections permanentes de `/index.html` vers `/` et du domaine sans `www` vers le domaine canonique.
 
 `dist/` est généré et ignoré par Git. La construction copie uniquement les ressources référencées par les onze pages (dont trois fiches de projets), réécrit leurs URL et produit `dist/asset-manifest.json`. Une modification d’une ressource modifie automatiquement son URL, y compris celle du CSS qui la référence. Les sources restent lisibles et modifiables.
 
@@ -49,6 +51,7 @@ Le workflow `.github/workflows/quality.yml` lance l’installation, les tests et
 | `css/recruiter-journey.css` | Liens contextuels, fiches de projets et galeries |
 | `scripts/build.cjs` | Construction statique et versionnement des ressources, sans bibliothèque externe |
 | `scripts/preview.cjs` | Aperçu HTTP local de la construction |
+| `scripts/seo.cjs` | Titres, descriptions, partage social, graphes Schema.org, sitemap et empreintes CSP |
 | `tests/` | Tests du thème, du chargement, du contact et de la construction |
 
 ## Images, polices et icônes
@@ -59,6 +62,8 @@ Le contact utilise les fichiers de marque Gmail (version 2026) et WhatsApp publi
 
 Les quatre images de projets converties en WebP conservent leurs pixels visibles. La photo utilise quatre variantes WebP de haute qualité (320, 480, 768 et 1 000 px) ; le navigateur choisit la résolution adaptée à l’écran. Le JPEG d’origine reste le secours et l’image de partage. Le mouvement CSS original de la photo (`blob-bounce`, 6 secondes) est conservé et respecte la préférence de réduction des animations.
 
+BookNest et BricoliRent disposent aussi de miniatures WebP de 320 et 640 px, avec transparence, compression de qualité 90 et choix responsive. Les originaux restent disponibles pour les écrans très denses. Les deux variantes de 320 px totalisent 23 226 octets, contre 658 644 octets pour les deux originaux ; ce gain concerne ces images, pas un temps de chargement global garanti.
+
 ## Contact
 
 Le formulaire explique qu’il ouvre le logiciel de messagerie du visiteur avec un brouillon. Il n’envoie rien depuis Vercel et n’annonce jamais un envoi effectué. La copie de l’adresse confirme la réussite de l’API Clipboard ; si elle échoue, une adresse sélectionnable permet une copie manuelle. Sans JavaScript, l’action native `mailto:` et un lien direct restent disponibles ; la CSP autorise ce protocole pour les formulaires.
@@ -67,8 +72,20 @@ Le formulaire explique qu’il ouvre le logiciel de messagerie du visiteur avec 
 
 La visite utilise des liens contextuels entre compétences, expériences et projets. Les blocs de continuation ajoutés en bas de page ont été retirés après revue visuelle avec Mosab. Aucune fenêtre de navigation n’apparaît sur minuterie. Les anciennes préférences `portfolio-tour-dismissed` restent intactes ; ce mécanisme n’est plus nécessaire au parcours actuel.
 
+Sans JavaScript, `css/no-script.css` affiche les liens principaux et le CV sur mobile, place l’en-tête dans le flux normal et masque les commandes inactives. Cette feuille est chargée uniquement via `<noscript>`. Le formulaire conserve son action native et les onze projets restent lisibles. Les flèches du carrousel conservent le focus sur la capture visible ; les liens de projets gardent la catégorie en ouverture locale et dans un sous-répertoire HTTP.
+
 Le préchargement utilise séparément `sessionStorage`, sous `portfolio-preloader-seen`, pour ne présenter l’introduction qu’à la première arrivée dans la session de l’onglet. Un stockage indisponible omet cette introduction facultative. Le thème reste géré indépendamment dans `localStorage`.
 
 Les filtres utilisent `projects.html?category=data` (ou `software`, `cloud`, `ia`, `mobile`). Les fiches conservent cette catégorie dans leur lien de retour. Les images de projets sont dans `assets/projects/evidence/`. Les sources, pages des rapports et consignes de remplacement sont documentées dans `docs/PROJETS_SOURCES.md` ; les rapports complets ne sont pas publiés.
 
 Le bilan technique figure dans `docs/OPTIMISATIONS.md`. Les améliorations du parcours recruteur, les vérifications et les aperçus des nouvelles fiches sont récapitulés dans `docs/UX_FINAL.md`.
+
+## Référencement naturel
+
+Les dix pages indexables contiennent leurs métadonnées et données structurées dans le HTML initial. Modifier les textes SEO dans `scripts/seo.cjs`, puis exécuter `npm run seo:write`. Cette commande synchronise les pages, `sitemap.xml`, `robots.txt` et les empreintes des blocs JSON-LD dans `vercel.json`. Après ajout, suppression ou changement de titre d’une carte projet, relancer aussi cette commande pour mettre à jour la liste structurée. `npm run seo:check` et la construction refusent des métadonnées désynchronisées.
+
+La page 404 reste exclue de l’indexation. Les filtres de projets conservent leur fonctionnement et pointent vers la même URL canonique sans paramètres. Le portrait de partage garde son URL publique stable. Les liens d’accueil des sources utilisent `index.html` pour fonctionner aussi lors d’une ouverture directe des fichiers. La construction les convertit en `/` pour le site déployé ; sur l’accueil, le logo conserve son lien `#top`.
+
+Le bilan, les requêtes ciblées et les étapes Search Console après déploiement sont dans [docs/SEO.md](docs/SEO.md).
+
+Le dernier contrôle complet, ses corrections et ses limites sont décrits dans [docs/AUDIT_GLOBAL.md](docs/AUDIT_GLOBAL.md).

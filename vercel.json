@@ -2,22 +2,63 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "benabdellahmosab.com"
+        }
+      ],
+      "destination": "https://www.benabdellahmosab.com/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' mailto:" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-2mtOnEeHioIbJ7ux3vhXU7sN1hwAE18lq8pYkXCbos8=' 'sha256-JEzVD3IrfqW09w11p5HhIs2FvkwyyPlwt8JhnO9Qoos=' 'sha256-hj3n74du7nUxIVw8bp2YcwCpjLJABQJ+7/d4NkKQ0+I=' 'sha256-Ol9J0LoTdwasgKkkErqYdcLyHMtOFP6Nr8UrRhsYecE=' 'sha256-+PoA9TzehpYsZtlTMFtnaJlPqM2CTT2UPYLrlGHCuzw=' 'sha256-+V8XPh9U89JryoAyDKknUhQhwFQ56ZKEvl9d4Uc0N5M=' 'sha256-AaKcsBGaHLrt0WoKwwH5BQ49rlm8fIkSwkAfxcG6mM0=' 'sha256-jx4cGJ/+PmyV8GxeTkMCU060r7sLDUNSFStZxB3hpwI=' 'sha256-nvpaOl1ONjxeuscvvudFhes0l1nGhayuaMsv2ovBUJg=' 'sha256-1axNviqKkolpunV6vVH3F7mrili6z+2QOzgr+D7Y8AQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' mailto:"
+        }
       ]
     },
     {
       "source": "/static/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ]
