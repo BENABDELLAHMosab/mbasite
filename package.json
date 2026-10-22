@@ -9,5 +9,5 @@
     "build": "node scripts/build.cjs",
     "preview": "node scripts/preview.cjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": { "node": "24.x" }
 }

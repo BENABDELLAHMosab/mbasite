@@ -4,7 +4,7 @@ Site statique en HTML, CSS et JavaScript, hébergé sur Vercel. Aucune base de d
 
 ## Développement et vérification
 
-Utiliser Node.js 22 ou supérieur et servir les fichiers en HTTP :
+Utiliser Node.js 24.x et servir les fichiers en HTTP. La même version majeure est déclarée pour Vercel et GitHub Actions ; les mises à jour mineures et correctives restent autorisées :
 
 ```sh
 npm ci --ignore-scripts
@@ -22,7 +22,8 @@ Pour travailler directement sur les sources avec Python, utiliser `python -m htt
 
 La configuration du dépôt est dans `vercel.json` :
 
-- commande de construction : `npm run build` ;
+- installation désactivée (`installCommand: ""`), car le projet n’a aucune dépendance npm ;
+- commande de construction : `node scripts/build.cjs` ;
 - répertoire publié : `dist` ;
 - ressources dans `dist/static` : nom contenant une empreinte du contenu, cache navigateur d’un an ;
 - HTML et URL publiques stables (dont les deux logos) : revalidation à chaque visite ;
@@ -33,6 +34,8 @@ La configuration du dépôt est dans `vercel.json` :
 `dist/` est généré et ignoré par Git. La construction copie uniquement les ressources référencées par les onze pages (dont trois fiches de projets), réécrit leurs URL et produit `dist/asset-manifest.json`. Une modification d’une ressource modifie automatiquement son URL, y compris celle du CSS qui la référence. Les sources restent lisibles et modifiables.
 
 Le workflow `.github/workflows/quality.yml` lance l’installation, les tests et la construction à chaque push ou pull request. Il ne déploie pas le site lui-même.
+
+Vercel appelle directement Node pour construire le site, avec les mêmes contrôles SEO et CSP que `npm run build` en local. Cette configuration évite les appels npm inutiles et leurs avertissements sur une option d’environnement `cache-dir` absente du dépôt. Si des dépendances npm sont ajoutées à l’avenir, réactiver l’installation dans `vercel.json`.
 
 ## Fichiers importants
 
@@ -84,7 +87,7 @@ Le bilan technique figure dans `docs/OPTIMISATIONS.md`. Les améliorations du pa
 
 Les dix pages indexables contiennent leurs métadonnées et données structurées dans le HTML initial. Modifier les textes SEO dans `scripts/seo.cjs`, puis exécuter `npm run seo:write`. Cette commande synchronise les pages, `sitemap.xml`, `robots.txt` et les empreintes des blocs JSON-LD dans `vercel.json`. Après ajout, suppression ou changement de titre d’une carte projet, relancer aussi cette commande pour mettre à jour la liste structurée. `npm run seo:check` et la construction refusent des métadonnées désynchronisées.
 
-Pour `vercel.json`, le contrôle compare la valeur CSP générée, sans imposer une présentation du JSON. Une configuration compacte, indentée autrement, avec des clés réordonnées ou sans retour final est acceptée sans réécriture. Des empreintes manquantes, incorrectes ou supplémentaires restent bloquantes, comme l’ajout de `unsafe-inline` à `script-src` ; `seo:write` les corrige sans modifier les autres paramètres de déploiement. La commande de construction Vercel reste `npm run build`.
+Pour `vercel.json`, le contrôle compare la valeur CSP générée, sans imposer une présentation du JSON. Une configuration compacte, indentée autrement, avec des clés réordonnées ou sans retour final est acceptée sans réécriture. Des empreintes manquantes, incorrectes ou supplémentaires restent bloquantes, comme l’ajout de `unsafe-inline` à `script-src` ; `seo:write` les corrige sans modifier les autres paramètres de déploiement.
 
 La page 404 reste exclue de l’indexation. Les filtres de projets conservent leur fonctionnement et pointent vers la même URL canonique sans paramètres. Le portrait de partage garde son URL publique stable. Les liens d’accueil des sources utilisent `index.html` pour fonctionner aussi lors d’une ouverture directe des fichiers. La construction les convertit en `/` pour le site déployé ; sur l’accueil, le logo conserve son lien `#top`.
 
